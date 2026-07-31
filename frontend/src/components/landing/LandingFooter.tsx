@@ -25,12 +25,12 @@ export function LandingFooter() {
         </div>
 
         <div>
-          <h4 className="font-bold text-white mb-4 uppercase tracking-wider text-[11px]">Plataforma Base</h4>
+          <h4 className="font-bold text-white mb-4 uppercase tracking-wider text-[11px]">Accesos Institucionales</h4>
           <ul className="space-y-2">
-            <li><a href="#features" className="hover:text-white">Multi-Tenancy</a></li>
-            <li><a href="#features" className="hover:text-white">Sistema de Branding</a></li>
-            <li><a href="#features" className="hover:text-white">Autenticación & Permisos</a></li>
-            <li><a href="#pricing" className="hover:text-white">Planes Comerciales</a></li>
+            <li><a href="/portal" className="hover:text-white">Portal del Socio</a></li>
+            <li><a href="/portal/carnet" className="hover:text-white">Carnet Digital QR</a></li>
+            <li><a href="/dashboard/sports/tournaments" className="hover:text-white">Futsal AFA & Torneos</a></li>
+            <li><a href="/tv" className="hover:text-white">Newbery TV</a></li>
           </ul>
         </div>
 
