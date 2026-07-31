@@ -1,8 +1,8 @@
 {
-  "name": "club-digital-pro",
+  "name": "club-jorge-newbery",
   "version": "1.0.0",
   "private": true,
-  "description": "Plataforma SaaS Multi-Tenant para Gestión de Clubes Deportivos y Sociales",
+  "description": "Plataforma Oficial de Gestión del Club Atlético Jorge Newbery Digital",
   "scripts": {
     "dev:frontend": "npm --prefix frontend run dev",
     "dev:backend": "npm --prefix backend run dev",
@@ -19,11 +19,11 @@
     "mobile"
   ],
   "keywords": [
-    "saas",
-    "sports-club",
-    "multi-tenant",
-    "management"
+    "jorge-newbery",
+    "clubes-deportivos",
+    "futsal-afa",
+    "gestion-deportiva"
   ],
-  "author": "Club Digital Pro Team",
+  "author": "Club Atlético Jorge Newbery",
   "license": "UNLICENSED"
 }
