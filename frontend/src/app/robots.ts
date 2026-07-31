@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/admin/', '/super-admin/', '/dashboard/', '/portal/'],
       },
     ],
-    sitemap: 'https://clubdigitalpro.com/sitemap.xml',
+    sitemap: 'https://jorgenewbery.org.ar/sitemap.xml',
   };
 }

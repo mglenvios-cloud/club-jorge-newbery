@@ -4,10 +4,10 @@ import './globals.css';
 import { AppProviders } from '@/components/providers/AppProviders';
 
 export const metadata: Metadata = {
-  title: 'Club Digital Pro | Plataforma SaaS para Clubes Deportivos y Sociales',
+  title: 'Club Atlético Jorge Newbery | Plataforma Oficial de Gestión',
   description:
-    'Solución tecnológica cloud multi-tenant de alto rendimiento para la administración integral de instituciones deportivas y sociales.',
-  keywords: ['SaaS', 'Clubes Deportivos', 'Gestión Multi-Tenant', 'Club Digital Pro'],
+    'Plataforma digital oficial del Club Atlético Jorge Newbery: Gestión de socios, carnet digital, finanzas, reservas de canchas, torneos y Newbery TV.',
+  keywords: ['Club Atlético Jorge Newbery', 'Jorge Newbery', 'Socios', 'Carnet Digital', 'Deportes', 'Reservas'],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

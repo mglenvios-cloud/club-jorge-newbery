@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://clubdigitalpro.com';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_DOMAIN ? `https://${process.env.NEXT_PUBLIC_BASE_DOMAIN}` : 'https://jorgenewbery.org.ar';
   const now = new Date();
 
   return [

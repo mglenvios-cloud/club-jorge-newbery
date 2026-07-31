@@ -47,11 +47,11 @@ export default function LandingPage() {
       }}>
         <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
           <span style={{
-            background: 'linear-gradient(135deg,#6366f1,#8b5cf6)',
+            background: 'linear-gradient(135deg,#0055a5,#003366)',
             borderRadius: 10, padding: '6px 10px',
             fontWeight: 800, color: '#fff', fontSize: 16,
-          }}>⚡ CDP</span>
-          <span style={{ color: '#fff', fontWeight: 700, fontSize: 18 }}>Club Digital Pro</span>
+          }}>⚽ CAJN</span>
+          <span style={{ color: '#fff', fontWeight: 700, fontSize: 18 }}>Club Atlético Jorge Newbery</span>
         </Link>
 
         <div style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
