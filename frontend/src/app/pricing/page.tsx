@@ -1,38 +1,35 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Planes y Precios',
-  description: 'Elegí el plan ideal para tu club. Desde Starter hasta Enterprise y White Label. 14 días de prueba gratuita.',
+  title: 'Cuotas Sociales y Categorías',
+  description: 'Categorías de afiliados y cuotas sociales del Club Atlético Jorge Newbery. Acceso a instalaciones, carnet digital y disciplinas deportivas.',
 };
 
-const plans = [
+const memberCategories = [
   {
-    id: 'plan-001', name: 'Starter', price: 15000, highlighted: false,
-    description: 'Ideal para clubes pequeños que comienzan su digitalización.',
-    features: ['Hasta 200 socios', 'Portal web del socio', 'Carnet Digital QR', 'Soporte por email'],
-    modules: ['Socios', 'Portal del Socio'],
-    color: '#64748b',
+    id: 'cat-001', name: 'Socio Activo', price: 12000, highlighted: true,
+    description: 'Para mayores de 18 años con pleno acceso a las instalaciones y voz en asambleas.',
+    features: ['Carnet Digital con QR dinámico', 'Acceso a sede Devoto e instalaciones', 'Reserva de canchas y gimnasio', 'Descuento en entradas Futsal AFA', 'Acceso a Newbery TV'],
+    color: '#0055a5',
   },
   {
-    id: 'plan-002', name: 'Professional', price: 35000, highlighted: true,
-    description: 'Solución completa para clubes medianos con todas las herramientas esenciales.',
-    features: ['Hasta 1.000 socios', 'Finance Pro + Cuotas', 'Gestión Deportiva', 'Club TV Streaming', 'Portal del Socio', 'Soporte prioritario'],
-    modules: ['Socios', 'Finanzas', 'Deportes', 'Portal', 'Club TV'],
-    color: '#6366f1',
+    id: 'cat-002', name: 'Socio Cadete', price: 8500, highlighted: false,
+    description: 'Jóvenes de 12 a 17 años integrados a las actividades deportivas y recreativas.',
+    features: ['Carnet Digital QR', 'Participación en torneos de El Semillero', 'Acceso a entrenamientos y disciplinas', 'Uso de áreas sociales'],
+    color: '#3b82f6',
   },
   {
-    id: 'plan-003', name: 'Enterprise', price: 75000, highlighted: false,
-    description: 'Para grandes instituciones con todos los módulos y soporte dedicado.',
-    features: ['Hasta 10.000 socios', 'Todos los módulos', 'Media Center + IA', 'App Móvil nativa', 'Marketing masivo', 'Soporte dedicado 24/7'],
-    modules: ['Socios', 'Finanzas', 'Deportes', 'Portal', 'TV', 'Media Center IA', 'Marketing', 'Mobile App'],
+    id: 'cat-003', name: 'Socio Infantil', price: 6000, highlighted: false,
+    description: 'Niños de hasta 11 años inscritos en las escuelitas deportivas del club.',
+    features: ['Carnet Digital infantil', 'Inscripción a escuelitas formativas', 'Acceso a actividades recreativas', 'Carnet vinculado al grupo familiar'],
+    color: '#10b981',
+  },
+  {
+    id: 'cat-004', name: 'Grupo Familiar', price: 28000, highlighted: false,
+    description: 'Plan integral para titular, cónyuge e hijos menores de 18 años con beneficios exclusivos.',
+    features: ['Carnets individuales para todos los integrantes', 'Descuento en alquiler de instalaciones', 'Acceso prioritario a eventos institucionales', 'Descuentos en indumentaria oficial'],
     color: '#8b5cf6',
-  },
-  {
-    id: 'plan-004', name: 'White Label', price: 150000, highlighted: false,
-    description: 'Plataforma completa con marca propia y dominio exclusivo.',
-    features: ['Socios ilimitados', 'Storage ilimitado', 'Dominio y marca propios', 'Control RFID', 'Liga Pro Studio', 'CRM completo'],
-    modules: ['Todo + CRM + RFID + Liga Pro'],
-    color: '#ec4899',
   },
 ];
 
@@ -42,24 +39,24 @@ export default function PricingPage() {
       <div style={{ textAlign: 'center', marginBottom: 60 }}>
         <div style={{
           display: 'inline-block',
-          background: 'rgba(99,102,241,0.15)', border: '1px solid rgba(99,102,241,0.3)',
-          borderRadius: 100, padding: '6px 20px', marginBottom: 20,
-          color: '#a5b4fc', fontSize: 14, fontWeight: 600,
+          background: 'rgba(0,85,165,0.15)', border: '1px solid rgba(0,85,165,0.35)',
+          borderRadius: 100, padding: '6px 22px', marginBottom: 20,
+          color: '#93c5fd', fontSize: 14, fontWeight: 700,
         }}>
-          14 días de prueba gratuita en todos los planes
+          ⚽ Club Atlético Jorge Newbery — Villa Devoto
         </div>
-        <h1 style={{ fontSize: 52, fontWeight: 900, color: '#fff', margin: '0 0 16px' }}>
-          Planes y Precios
+        <h1 style={{ fontSize: 48, fontWeight: 900, color: '#fff', margin: '0 0 16px', letterSpacing: '-0.02em' }}>
+          Categorías y Cuotas Sociales
         </h1>
-        <p style={{ color: '#94a3b8', fontSize: 18 }}>
-          Sin permanencia. Cancelá cuando quieras. Soporte en español.
+        <p style={{ color: '#94a3b8', fontSize: 18, maxWidth: 640, margin: '0 auto' }}>
+          Sumate a la gran familia del Club Atlético Jorge Newbery. Asociate de forma digital y disfrutá de todas nuestras instalaciones y disciplinas.
         </p>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 20, maxWidth: 1200, margin: '0 auto' }}>
-        {plans.map((plan) => (
+        {memberCategories.map((plan) => (
           <div key={plan.id} style={{
-            background: plan.highlighted ? `linear-gradient(180deg,rgba(99,102,241,0.15) 0%,rgba(15,23,42,0.95) 30%)` : 'rgba(15,23,42,0.9)',
+            background: plan.highlighted ? `linear-gradient(180deg,rgba(0,85,165,0.2) 0%,rgba(15,23,42,0.95) 30%)` : 'rgba(15,23,42,0.9)',
             borderRadius: 20, padding: 28,
             border: `1px solid ${plan.highlighted ? plan.color : 'rgba(255,255,255,0.08)'}`,
             position: 'relative',
@@ -67,11 +64,11 @@ export default function PricingPage() {
             {plan.highlighted && (
               <div style={{
                 position: 'absolute', top: -14, left: '50%', transform: 'translateX(-50%)',
-                background: 'linear-gradient(135deg,#6366f1,#8b5cf6)',
+                background: 'linear-gradient(135deg,#0055a5,#003366)',
                 color: '#fff', padding: '5px 20px', borderRadius: 20, fontSize: 12, fontWeight: 700,
                 whiteSpace: 'nowrap',
               }}>
-                MÁS POPULAR
+                CATEGORÍA PRINCIPAL
               </div>
             )}
 
@@ -79,39 +76,39 @@ export default function PricingPage() {
             <p style={{ color: '#64748b', fontSize: 13, margin: '0 0 20px', lineHeight: 1.5 }}>{plan.description}</p>
 
             <div style={{ marginBottom: 24 }}>
-              <span style={{ fontSize: 40, fontWeight: 900, color: '#fff' }}>${plan.price.toLocaleString()}</span>
+              <span style={{ fontSize: 38, fontWeight: 900, color: '#fff' }}>${plan.price.toLocaleString()}</span>
               <span style={{ color: '#64748b', fontSize: 14 }}> ARS/mes</span>
             </div>
 
             <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 24px' }}>
               {plan.features.map((f) => (
                 <li key={f} style={{
-                  padding: '8px 0', color: '#cbd5e1', fontSize: 14,
+                  padding: '8px 0', color: '#cbd5e1', fontSize: 13,
                   display: 'flex', alignItems: 'flex-start', gap: 8,
                   borderBottom: '1px solid rgba(255,255,255,0.04)',
                 }}>
-                  <span style={{ color: plan.color, flexShrink: 0 }}>✓</span>
+                  <span style={{ color: plan.color, flexShrink: 0, fontWeight: 700 }}>✓</span>
                   {f}
                 </li>
               ))}
             </ul>
 
-            <a href="/register-club" style={{
+            <Link href="/portal" style={{
               display: 'block', textAlign: 'center', textDecoration: 'none',
-              background: plan.highlighted ? `linear-gradient(135deg,#6366f1,#8b5cf6)` : `${plan.color}22`,
+              background: plan.highlighted ? `linear-gradient(135deg,#0055a5,#003366)` : `${plan.color}22`,
               color: plan.highlighted ? '#fff' : plan.color,
               border: `1px solid ${plan.color}44`,
               padding: '12px', borderRadius: 10, fontWeight: 700, fontSize: 15,
             }}>
-              Empezar con {plan.name} →
-            </a>
+              Asociarse →
+            </Link>
           </div>
         ))}
       </div>
 
       <div style={{ textAlign: 'center', marginTop: 60, color: '#64748b' }}>
         <p style={{ fontSize: 15 }}>
-          ¿Tenés dudas? <a href="/contact" style={{ color: '#a5b4fc', textDecoration: 'none' }}>Contactanos</a> y te asesoramos sin compromiso.
+          ¿Consultas sobre inscripciones o secretaría? <Link href="/contact" style={{ color: '#60a5fa', textDecoration: 'none', fontWeight: 600 }}>Contactá a Administración</Link>
         </p>
       </div>
     </div>
