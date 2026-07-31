@@ -1,5 +1,22 @@
 'use client';
+
+import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import HeroOverlay from '@/components/landing/HeroOverlay';
+import CinematicTransition from '@/components/landing/CinematicTransition';
+import { defaultJorgeNewberyBranding } from '@/config/tenantBranding';
+
+// Dynamically import StadiumScene3D with ssr: false for Babylon.js WebGL compatibility
+const StadiumScene3D = dynamic(() => import('@/components/3d/StadiumScene3D'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full flex items-center justify-center bg-slate-950 text-blue-400 text-sm font-semibold animate-pulse">
+      Cargando Estadio 3D Nocturno...
+    </div>
+  ),
+});
 
 const newberyModules = [
   { icon: '🪪', title: 'Portal del Socio', desc: 'Padrón de afiliados, consulta de estado de cuota, trámites online y grupo familiar.', href: '/portal' },
@@ -20,156 +37,121 @@ const institutionalBadges = [
   { value: '100% HD', label: 'Newbery TV Streaming' },
 ];
 
-const navLinks = [
-  { href: '/portal', label: 'Portal Socios' },
-  { href: '/portal/bookings', label: 'Reservas' },
-  { href: '/dashboard/sports/tournaments', label: 'Torneos Futsal' },
-  { href: '/tv', label: 'Newbery TV' },
-];
-
 export default function LandingPage() {
+  const router = Router();
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  function Router() {
+    return useRouter();
+  }
+
+  const handleEnterClick = () => {
+    setIsTransitioning(true);
+    setTimeout(() => {
+      router.push('/portal');
+    }, 1000);
+  };
+
   return (
-    <div style={{ background: '#050a14', color: '#e2e8f0', fontFamily: 'Inter, system-ui, sans-serif', minHeight: '100vh' }}>
-      <style>{`
-        .nav-link { color: #94a3b8; text-decoration: none; font-size: 15px; transition: color 0.2s; }
-        .nav-link:hover { color: #fff; }
-        .feature-card { background: rgba(15,23,42,0.85); border-radius: 16px; padding: 28px; border: 1px solid rgba(0,85,165,0.3); transition: all 0.3s; text-decoration: none; display: block; color: inherit; }
-        .feature-card:hover { border-color: rgba(0,85,165,0.7); transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,85,165,0.2); }
-        .btn-primary { background: linear-gradient(135deg,#0055a5,#003366); color: #fff; text-decoration: none; padding: 16px 36px; border-radius: 12px; font-weight: 800; font-size: 18px; box-shadow: 0 0 40px rgba(0,85,165,0.4); display: inline-block; }
-        .btn-secondary { border: 1px solid rgba(0,85,165,0.5); color: #93c5fd; text-decoration: none; padding: 16px 36px; border-radius: 12px; font-weight: 700; font-size: 18px; background: rgba(0,85,165,0.12); display: inline-block; }
-      `}</style>
-
-      {/* NAV */}
-      <nav style={{
-        position: 'sticky', top: 0, zIndex: 100,
-        borderBottom: '1px solid rgba(0,85,165,0.25)',
-        backdropFilter: 'blur(20px)',
-        background: 'rgba(5,10,20,0.94)',
-        padding: '16px 40px',
-        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-      }}>
-        <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 12 }}>
-          <span style={{
-            background: 'linear-gradient(135deg,#0055a5,#002244)',
-            borderRadius: 10, padding: '6px 12px',
-            fontWeight: 900, color: '#fff', fontSize: 16,
-            boxShadow: '0 0 15px rgba(0,85,165,0.5)'
-          }}>⚽ CAJN</span>
-          <span style={{ color: '#fff', fontWeight: 800, fontSize: 18, letterSpacing: '-0.02em' }}>
-            Club Atlético Jorge Newbery Digital
-          </span>
-        </Link>
-
-        <div style={{ display: 'flex', gap: 28, alignItems: 'center' }}>
-          {navLinks.map((l) => (
-            <a key={l.href} href={l.href} className="nav-link">{l.label}</a>
-          ))}
-          <a href="/login" className="nav-link" style={{ marginLeft: 8 }}>Ingresar</a>
-          <a href="/login" style={{
-            background: 'linear-gradient(135deg,#0055a5,#003366)',
-            color: '#fff', textDecoration: 'none',
-            padding: '10px 24px', borderRadius: 10, fontWeight: 700, fontSize: 15,
-            boxShadow: '0 4px 14px rgba(0,85,165,0.3)',
-          }}>
-            Acceso Socios →
-          </a>
-        </div>
-      </nav>
-
-      {/* HERO */}
-      <section style={{
-        textAlign: 'center', padding: '100px 40px 80px',
-        background: 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,85,165,0.25) 0%, transparent 70%)',
-      }}>
-        <div style={{
-          display: 'inline-block',
-          background: 'rgba(0,85,165,0.15)', border: '1px solid rgba(0,85,165,0.4)',
-          borderRadius: 100, padding: '6px 22px', marginBottom: 24,
-          color: '#93c5fd', fontSize: 14, fontWeight: 700,
-        }}>
-          ⚽ Ecosistema Oficial — Villa Devoto, Buenos Aires
-        </div>
-        <h1 style={{
-          fontSize: 'clamp(40px,5vw,72px)', fontWeight: 900,
-          lineHeight: 1.1, margin: '0 0 24px', letterSpacing: '-0.03em',
-          background: 'linear-gradient(135deg,#fff 40%,#93c5fd)',
-          WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-        }}>
-          Club Atlético Jorge Newbery Digital
-        </h1>
-        <p style={{
-          fontSize: 20, color: '#94a3b8', maxWidth: 720,
-          margin: '0 auto 40px', lineHeight: 1.6,
-        }}>
-          La plataforma oficial del club: carnet digital QR, estado de cuota, reservas de canchas, Futsal AFA Profesional, El Semillero y transmisiones en vivo de Newbery TV.
-        </p>
-        <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
-          <a href="/portal" className="btn-primary">Ingresar al Portal del Socio →</a>
-          <a href="/tv" className="btn-secondary">Ver Newbery TV</a>
-        </div>
+    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-blue-500 selection:text-white">
+      {/* Cinematic Fullscreen 3D Stadium & Hero Overlay Section */}
+      <section className="relative w-full h-screen overflow-hidden">
+        <StadiumScene3D
+          branding={defaultJorgeNewberyBranding}
+          onBallClick={handleEnterClick}
+          isTransitioning={isTransitioning}
+        />
+        <HeroOverlay
+          branding={defaultJorgeNewberyBranding}
+          onEnterClick={handleEnterClick}
+          isTransitioning={isTransitioning}
+        />
       </section>
 
-      {/* INSTITUTIONAL BADGES */}
-      <section style={{ padding: '36px 40px', borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)', background: 'rgba(15,23,42,0.5)' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 24, maxWidth: 1000, margin: '0 auto' }}>
-          {institutionalBadges.map((s) => (
-            <div key={s.label} style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: 30, fontWeight: 900, color: '#3b82f6', marginBottom: 4, letterSpacing: '-0.02em' }}>{s.value}</div>
-              <div style={{ color: '#64748b', fontSize: 13, fontWeight: 600 }}>{s.label}</div>
+      {/* Cinematic Transition Component */}
+      <CinematicTransition isActive={isTransitioning} branding={defaultJorgeNewberyBranding} />
+
+      {/* Institutional Badges Bar */}
+      <section className="py-12 px-6 border-y border-slate-800/80 bg-slate-900/60 backdrop-blur-md">
+        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          {institutionalBadges.map((badge) => (
+            <div key={badge.label} className="p-4 rounded-2xl bg-slate-950/40 border border-slate-800/60">
+              <div className="text-2xl md:text-3xl font-black text-blue-400 mb-1 tracking-tight">
+                {badge.value}
+              </div>
+              <div className="text-xs text-slate-400 font-semibold">{badge.label}</div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* INSTITUTIONAL MODULES */}
-      <section style={{ padding: '80px 40px' }}>
-        <div style={{ textAlign: 'center', marginBottom: 56 }}>
-          <h2 style={{ fontSize: 38, fontWeight: 900, color: '#fff', margin: '0 0 12px', letterSpacing: '-0.02em' }}>
+      {/* Institutional Modules & Ecosystem Services */}
+      <section className="py-20 px-6 max-w-7xl mx-auto">
+        <div className="text-center mb-14">
+          <h2 className="text-3xl sm:text-4xl font-black text-white mb-3 tracking-tight">
             Servicios e Instalaciones del Club
           </h2>
-          <p style={{ color: '#64748b', fontSize: 17 }}>Ecosistema digital unificado para la comunidad del Club Atlético Jorge Newbery</p>
+          <p className="text-slate-400 text-base max-w-xl mx-auto">
+            Ecosistema digital unificado para la comunidad del Club Atlético Jorge Newbery
+          </p>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24, maxWidth: 1150, margin: '0 auto' }}>
-          {newberyModules.map((f) => (
-            <Link key={f.title} href={f.href} className="feature-card">
-              <div style={{ fontSize: 38, marginBottom: 16 }}>{f.icon}</div>
-              <h3 style={{ color: '#fff', fontWeight: 800, fontSize: 18, margin: '0 0 8px' }}>{f.title}</h3>
-              <p style={{ color: '#64748b', fontSize: 14, lineHeight: 1.6, margin: '0 0 16px' }}>{f.desc}</p>
-              <span style={{ color: '#60a5fa', fontSize: 13, fontWeight: 700 }}>Ingresar →</span>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {newberyModules.map((item) => (
+            <Link
+              key={item.title}
+              href={item.href}
+              className="group p-6 rounded-2xl bg-slate-900/50 hover:bg-slate-900 border border-slate-800/80 hover:border-blue-500/50 transition-all duration-300 hover:-translate-y-1 shadow-lg hover:shadow-blue-500/10 flex flex-col justify-between"
+            >
+              <div>
+                <div className="text-4xl mb-4">{item.icon}</div>
+                <h3 className="text-lg font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
+                  {item.title}
+                </h3>
+                <p className="text-slate-400 text-xs leading-relaxed mb-6">{item.desc}</p>
+              </div>
+              <span className="text-xs font-bold text-blue-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                Ingresar →
+              </span>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* CALL TO ACTION */}
-      <section style={{
-        textAlign: 'center', padding: '80px 40px',
-        background: 'radial-gradient(ellipse 60% 80% at 50% 50%, rgba(0,85,165,0.15) 0%, transparent 70%)',
-      }}>
-        <h2 style={{ fontSize: 40, fontWeight: 900, color: '#fff', margin: '0 0 16px', letterSpacing: '-0.02em' }}>
-          Plataforma Institucional Oficial
-        </h2>
-        <p style={{ color: '#94a3b8', fontSize: 18, margin: '0 0 40px', maxWidth: 640, marginLeft: 'auto', marginRight: 'auto' }}>
-          Accedé con tus credenciales de socio para verificar tu carnet digital QR, estado de cuenta y reservas deportivas.
-        </p>
-        <a href="/login" className="btn-primary" style={{ fontSize: 18, padding: '16px 44px' }}>
-          Ingresar al Portal del Socio →
-        </a>
+      {/* Call to Action Footer Section */}
+      <section className="py-20 px-6 text-center bg-gradient-to-b from-slate-950 via-blue-950/20 to-slate-950 border-t border-slate-800/60">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl font-black text-white mb-4 tracking-tight">
+            Plataforma Institucional Oficial
+          </h2>
+          <p className="text-slate-400 text-sm sm:text-base mb-8 leading-relaxed">
+            Accedé con tus credenciales de socio para verificar tu carnet digital QR, estado de cuenta y reservas deportivas.
+          </p>
+          <button
+            onClick={handleEnterClick}
+            className="px-8 py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-sky-500 text-white font-black text-base shadow-xl shadow-blue-600/30 hover:scale-105 transition-all cursor-pointer inline-flex items-center gap-2"
+          >
+            <span>Ingresar al Portal del Socio →</span>
+          </button>
+        </div>
       </section>
 
-      {/* FOOTER */}
-      <footer style={{
-        borderTop: '1px solid rgba(255,255,255,0.06)',
-        padding: '32px 40px',
-        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        color: '#64748b', fontSize: 14,
-      }}>
+      {/* Footer */}
+      <footer className="py-8 px-6 border-t border-slate-800/80 bg-slate-950 text-slate-500 text-xs flex flex-col sm:flex-row items-center justify-between gap-4 max-w-7xl mx-auto">
         <span>© 2026 Club Atlético Jorge Newbery. Todos los derechos reservados.</span>
-        <div style={{ display: 'flex', gap: 24 }}>
-          <a href="/portal" className="nav-link">Portal Socios</a>
-          <a href="/portal/bookings" className="nav-link">Reservas</a>
-          <a href="/tv" className="nav-link">Newbery TV</a>
-          <a href="/login" className="nav-link">Ingresar</a>
+        <div className="flex items-center gap-6">
+          <Link href="/portal" className="hover:text-slate-300 transition-colors">
+            Portal Socios
+          </Link>
+          <Link href="/portal/bookings" className="hover:text-slate-300 transition-colors">
+            Reservas
+          </Link>
+          <Link href="/tv" className="hover:text-slate-300 transition-colors">
+            Newbery TV
+          </Link>
+          <Link href="/login" className="hover:text-slate-300 transition-colors">
+            Ingresar
+          </Link>
         </div>
       </footer>
     </div>
