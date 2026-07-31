@@ -6,6 +6,14 @@ const nextConfig = {
     const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
     return [
       {
+        source: '/admin/contabilidad',
+        destination: '/dashboard/finance',
+      },
+      {
+        source: '/admin/contabilidad/:path*',
+        destination: '/dashboard/finance/:path*',
+      },
+      {
         source: '/api/:path*',
         destination: `${backendUrl.replace(/\/$/, '')}/:path*`,
       },
