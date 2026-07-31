@@ -12,7 +12,7 @@ import { defaultJorgeNewberyBranding } from '@/config/tenantBranding';
 const StadiumScene3D = dynamic(() => import('@/components/3d/StadiumScene3D'), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-full flex items-center justify-center bg-slate-950 text-blue-400 text-sm font-semibold animate-pulse">
+    <div className="w-full h-full flex items-center justify-center bg-slate-950 text-red-500 text-sm font-semibold animate-pulse">
       Cargando Estadio 3D Nocturno...
     </div>
   ),
@@ -20,11 +20,11 @@ const StadiumScene3D = dynamic(() => import('@/components/3d/StadiumScene3D'), {
 
 const newberyModules = [
   { icon: '🪪', title: 'Portal del Socio', desc: 'Padrón de afiliados, consulta de estado de cuota, trámites online y grupo familiar.', href: '/portal' },
-  { icon: '📲', title: 'Carnet Digital', desc: 'Carnet oficial dinámico con código QR para validación rápida en molinetes y accesos.', href: '/portal/carnet' },
+  { icon: '📲', title: 'Carnet Digital QR', desc: 'Carnet oficial dinámico con código QR para validación rápida en molinetes y accesos.', href: '/portal/carnet' },
   { icon: '🏆', title: 'Centro de Gestión Deportiva', desc: 'Control de planteles, disciplinas, entrenamientos, horarios y aptitudes médicas.', href: '/dashboard/sports' },
-  { icon: '⚽', title: 'Futsal AFA Profesional', desc: 'Fixture, resultados en vivo, tabla de posiciones y seguimiento del primer equipo en AFA.', href: '/dashboard/sports/tournaments' },
-  { icon: '🌱', title: 'El Semillero', desc: 'Desarrollo de divisiones inferiores, formación de juveniles y captación de talentos.', href: '/dashboard/sports/rosters' },
-  { icon: '👕', title: 'Planteles & Jugadores', desc: 'Fichas individuales, estadísticas de rendimiento, convocatorias y cuerpos técnicos.', href: '/dashboard/sports/stats' },
+  { icon: '⚽', title: 'Futsal Primera AFA', desc: 'Fixture, resultados en vivo, tabla de posiciones y seguimiento del primer equipo en AFA.', href: '/dashboard/sports/tournaments' },
+  { icon: '🌱', title: 'El Semillero & Inferiores', desc: 'Desarrollo de divisiones inferiores, formación de juveniles y captación de talentos.', href: '/dashboard/sports/rosters' },
+  { icon: '👕', title: 'Planteles & Juegos', desc: 'Fichas individuales, estadísticas de rendimiento, convocatorias y juegos.', href: '/dashboard/sports/stats' },
   { icon: '📺', title: 'Newbery TV', desc: 'Transmisiones en directo de partidos, resúmenes, conferencias y videoteca institucional.', href: '/tv' },
   { icon: '💵', title: 'Finanzas del Club', desc: 'Tesorería, cobro de cuotas, recaudación, presupuesto y balances contables.', href: '/dashboard/finance' },
   { icon: '🏛️', title: 'Administración Institucional', desc: 'Gestión directiva, actas de comisión, auditoría y control de sedes e instalaciones.', href: '/dashboard' },
@@ -38,22 +38,18 @@ const institutionalBadges = [
 ];
 
 export default function LandingPage() {
-  const router = Router();
+  const router = useRouter();
   const [isTransitioning, setIsTransitioning] = useState(false);
-
-  function Router() {
-    return useRouter();
-  }
 
   const handleEnterClick = () => {
     setIsTransitioning(true);
     setTimeout(() => {
-      router.push('/portal');
+      router.push('/dashboard/sports');
     }, 1000);
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-blue-500 selection:text-white">
+    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-red-600 selection:text-white">
       {/* Cinematic Fullscreen 3D Stadium & Hero Overlay Section */}
       <section className="relative w-full h-screen overflow-hidden">
         <StadiumScene3D
@@ -76,7 +72,7 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           {institutionalBadges.map((badge) => (
             <div key={badge.label} className="p-4 rounded-2xl bg-slate-950/40 border border-slate-800/60">
-              <div className="text-2xl md:text-3xl font-black text-blue-400 mb-1 tracking-tight">
+              <div className="text-2xl md:text-3xl font-black text-red-500 mb-1 tracking-tight">
                 {badge.value}
               </div>
               <div className="text-xs text-slate-400 font-semibold">{badge.label}</div>
@@ -101,16 +97,16 @@ export default function LandingPage() {
             <Link
               key={item.title}
               href={item.href}
-              className="group p-6 rounded-2xl bg-slate-900/50 hover:bg-slate-900 border border-slate-800/80 hover:border-blue-500/50 transition-all duration-300 hover:-translate-y-1 shadow-lg hover:shadow-blue-500/10 flex flex-col justify-between"
+              className="group p-6 rounded-2xl bg-slate-900/50 hover:bg-slate-900 border border-slate-800/80 hover:border-red-500/50 transition-all duration-300 hover:-translate-y-1 shadow-lg hover:shadow-red-500/10 flex flex-col justify-between"
             >
               <div>
                 <div className="text-4xl mb-4">{item.icon}</div>
-                <h3 className="text-lg font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
+                <h3 className="text-lg font-bold text-white mb-2 group-hover:text-red-400 transition-colors">
                   {item.title}
                 </h3>
                 <p className="text-slate-400 text-xs leading-relaxed mb-6">{item.desc}</p>
               </div>
-              <span className="text-xs font-bold text-blue-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+              <span className="text-xs font-bold text-red-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
                 Ingresar →
               </span>
             </Link>
@@ -119,20 +115,29 @@ export default function LandingPage() {
       </section>
 
       {/* Call to Action Footer Section */}
-      <section className="py-20 px-6 text-center bg-gradient-to-b from-slate-950 via-blue-950/20 to-slate-950 border-t border-slate-800/60">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl font-black text-white mb-4 tracking-tight">
+      <section className="py-20 px-6 text-center bg-gradient-to-b from-slate-950 via-red-950/20 to-slate-950 border-t border-slate-800/60">
+        <div className="max-w-3xl mx-auto space-y-6">
+          <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
             Plataforma Institucional Oficial
           </h2>
-          <p className="text-slate-400 text-sm sm:text-base mb-8 leading-relaxed">
-            Accedé con tus credenciales de socio para verificar tu carnet digital QR, estado de cuenta y reservas deportivas.
+          <p className="text-slate-400 text-sm sm:text-base leading-relaxed max-w-xl mx-auto">
+            Accedé con tus credenciales de socio o administración (<strong>admin</strong> / <strong>admin</strong>) para verificar carnet QR, estado de cuenta y gestión deportiva.
           </p>
-          <button
-            onClick={handleEnterClick}
-            className="px-8 py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-sky-500 text-white font-black text-base shadow-xl shadow-blue-600/30 hover:scale-105 transition-all cursor-pointer inline-flex items-center gap-2"
-          >
-            <span>Ingresar al Portal del Socio →</span>
-          </button>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+            <button
+              onClick={handleEnterClick}
+              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-red-700 via-red-600 to-rose-500 text-white font-black text-base shadow-xl shadow-red-600/30 hover:scale-105 transition-all cursor-pointer inline-flex items-center justify-center gap-2"
+            >
+              <span>Ingresar al Centro de Gestión Deportiva →</span>
+            </button>
+            <Link
+              href="/login"
+              className="w-full sm:w-auto px-6 py-4 rounded-2xl bg-slate-900 border border-red-500/40 text-red-400 font-bold text-base hover:bg-red-600 hover:text-white transition-all inline-flex items-center justify-center gap-2"
+            >
+              <span>Acceso Consola (admin / admin)</span>
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -143,14 +148,14 @@ export default function LandingPage() {
           <Link href="/portal" className="hover:text-slate-300 transition-colors">
             Portal Socios
           </Link>
-          <Link href="/portal/bookings" className="hover:text-slate-300 transition-colors">
-            Reservas
+          <Link href="/dashboard/sports" className="hover:text-slate-300 transition-colors">
+            Gestión Deportiva
           </Link>
           <Link href="/tv" className="hover:text-slate-300 transition-colors">
             Newbery TV
           </Link>
           <Link href="/login" className="hover:text-slate-300 transition-colors">
-            Ingresar
+            Ingresar (admin / admin)
           </Link>
         </div>
       </footer>
