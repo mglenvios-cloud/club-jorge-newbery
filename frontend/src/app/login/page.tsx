@@ -8,7 +8,7 @@ import { useAuth } from '@/components/providers/AuthProvider';
 import { SystemRole } from '@club-digital-pro/shared';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('admin@clubdigitalpro.com');
+  const [email, setEmail] = useState('admin@jorgenewbery.org.ar');
   const [password, setPassword] = useState('••••••••••••');
   const { login } = useAuth();
   const router = useRouter();
@@ -20,9 +20,9 @@ export default function LoginPage() {
         id: 'usr-admin-001',
         email,
         firstName: 'Administrador',
-        lastName: 'SaaS',
+        lastName: 'Newbery',
         role: SystemRole.SUPER_ADMIN,
-        tenantId: 'tenant-demo-001',
+        tenantId: 'tenant-jorge-newbery',
         permissions: [
           'tenant:read',
           'tenant:write',
@@ -46,14 +46,14 @@ export default function LoginPage() {
       <div className="w-full max-w-md space-y-8 relative z-10">
         <div className="text-center">
           <Link href="/" className="inline-flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white shadow-xl shadow-blue-600/30">
-              <Cpu className="w-7 h-7" />
+            <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white shadow-xl shadow-blue-600/30 text-xl font-black">
+              ⚽
             </div>
           </Link>
-          <h1 className="text-3xl font-black tracking-tight text-white">
-            CLUB DIGITAL <span className="text-blue-500">PRO</span>
+          <h1 className="text-2xl font-black tracking-tight text-white">
+            CLUB ATLÉTICO <span className="text-blue-500">JORGE NEWBERY</span>
           </h1>
-          <p className="text-slate-400 text-xs mt-2">Acceso a la Consola Institucional SaaS Multi-Tenant</p>
+          <p className="text-slate-400 text-xs mt-2">Plataforma Institucional Digital — Portal del Socio</p>
         </div>
 
         <form onSubmit={handleSubmit} className="glass-card p-8 rounded-3xl border border-slate-800 space-y-6">
