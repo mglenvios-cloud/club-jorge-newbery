@@ -39,7 +39,7 @@ export default function SuperAdminDashboard() {
               Super Admin — Dashboard
             </h1>
             <p style={{ color: '#64748b', margin: 0, fontSize: 14 }}>
-              Vista global de Club Digital Pro SaaS
+              Vista global del Club Atlético Jorge Newbery
             </p>
           </div>
         </div>

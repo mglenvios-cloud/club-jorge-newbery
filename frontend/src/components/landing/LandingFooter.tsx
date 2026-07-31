@@ -13,14 +13,14 @@ export function LandingFooter() {
               <Cpu className="w-5 h-5" />
             </div>
             <span className="font-extrabold text-lg text-white">
-              CLUB DIGITAL <span className="text-blue-500">PRO</span>
+              CLUB ATLÉTICO <span className="text-blue-500">JORGE NEWBERY</span>
             </span>
           </div>
           <p className="text-slate-400 text-xs max-w-sm leading-relaxed mb-4">
-            Plataforma SaaS corporativa para la transformación tecnológica de clubes deportivos y sociales. Infraestructura multi-tenant independiente.
+            Plataforma digital oficial para la gestión integral del Club Atlético Jorge Newbery.
           </p>
           <p className="text-[11px] text-slate-500 font-mono">
-            © {new Date().getFullYear()} Club Digital Pro Inc. Todos los derechos reservados.
+            © {new Date().getFullYear()} Club Atlético Jorge Newbery. Todos los derechos reservados.
           </p>
         </div>
 

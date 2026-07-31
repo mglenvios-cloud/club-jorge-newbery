@@ -54,7 +54,7 @@ export function FeatureSection() {
             Diseñado para la Escala Comercial SaaS
           </h3>
           <p className="mt-4 text-slate-400 text-sm sm:text-base">
-            Club Digital Pro proporciona la base sólida y modular necesaria para desplegar la gestión digital de cualquier institución deportiva o social.
+            Club Atlético Jorge Newbery proporciona la base sólida y modular necesaria para desplegar la gestión digital integral del club.
           </p>
         </div>
 

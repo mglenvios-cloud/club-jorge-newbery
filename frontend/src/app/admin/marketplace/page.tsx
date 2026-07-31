@@ -37,7 +37,7 @@ const initialMarketplaceCatalog: MarketplaceModule[] = [
     category: 'CORE',
     version: '1.2.0',
     latestVersion: '1.2.0',
-    author: 'Club Digital Pro Core',
+    author: 'Club Atlético Jorge Newbery',
     icon: 'Users',
     images: [
       'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&h=400&fit=crop',
@@ -63,7 +63,7 @@ const initialMarketplaceCatalog: MarketplaceModule[] = [
     category: 'FINANCE',
     version: '2.1.0',
     latestVersion: '2.1.0',
-    author: 'Club Digital Pro Finance',
+    author: 'Club Atlético Jorge Newbery',
     icon: 'DollarSign',
     images: [
       'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&h=400&fit=crop',
@@ -89,7 +89,7 @@ const initialMarketplaceCatalog: MarketplaceModule[] = [
     category: 'SPORTS',
     version: '1.4.0',
     latestVersion: '1.5.0',
-    author: 'Club Digital Pro Sports',
+    author: 'Club Atlético Jorge Newbery',
     icon: 'Trophy',
     images: [
       'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&h=400&fit=crop',
@@ -115,7 +115,7 @@ const initialMarketplaceCatalog: MarketplaceModule[] = [
     category: 'COMMUNICATION',
     version: '1.1.0',
     latestVersion: '1.1.0',
-    author: 'Club Digital Pro Media',
+    author: 'Club Atlético Jorge Newbery',
     icon: 'Send',
     images: [
       'https://images.unsplash.com/photo-1557838923-2985c318be48?w=800&h=400&fit=crop',
@@ -140,7 +140,7 @@ const initialMarketplaceCatalog: MarketplaceModule[] = [
     category: 'MEDIA',
     version: '2.0.0',
     latestVersion: '2.0.0',
-    author: 'Club Digital Pro Media',
+    author: 'Club Atlético Jorge Newbery',
     icon: 'Tv',
     images: [
       'https://images.unsplash.com/photo-1518604666860-9ed391f76460?w=800&h=400&fit=crop',
@@ -165,7 +165,7 @@ const initialMarketplaceCatalog: MarketplaceModule[] = [
     category: 'PORTAL',
     version: '1.0.0',
     latestVersion: '1.0.0',
-    author: 'Club Digital Pro Core',
+    author: 'Club Atlético Jorge Newbery',
     icon: 'Globe',
     images: [
       'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=800&h=400&fit=crop',
@@ -191,7 +191,7 @@ const initialMarketplaceCatalog: MarketplaceModule[] = [
     category: 'PORTAL',
     version: '1.3.0',
     latestVersion: '1.3.0',
-    author: 'Club Digital Pro Core',
+    author: 'Club Atlético Jorge Newbery',
     icon: 'UserCheck',
     images: [
       'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&h=400&fit=crop',
@@ -217,7 +217,7 @@ const initialMarketplaceCatalog: MarketplaceModule[] = [
     category: 'LEAGUE',
     version: '1.0.0',
     latestVersion: '1.0.0',
-    author: 'Club Digital Pro League',
+    author: 'Club Atlético Jorge Newbery',
     icon: 'Shield',
     images: [
       'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&h=400&fit=crop',
@@ -242,7 +242,7 @@ const initialMarketplaceCatalog: MarketplaceModule[] = [
     category: 'CRM',
     version: '1.0.1',
     latestVersion: '1.0.1',
-    author: 'Club Digital Pro Sales',
+    author: 'Club Atlético Jorge Newbery',
     icon: 'PieChart',
     images: [
       'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&h=400&fit=crop',
@@ -267,7 +267,7 @@ const initialMarketplaceCatalog: MarketplaceModule[] = [
     category: 'ACCESS',
     version: '2.0.0',
     latestVersion: '2.0.0',
-    author: 'Club Digital Pro Hardware',
+    author: 'Club Atlético Jorge Newbery',
     icon: 'Key',
     images: [
       'https://images.unsplash.com/photo-1558002038-1055907df827?w=800&h=400&fit=crop',
@@ -382,7 +382,7 @@ export default function FunctionalMarketplacePage() {
             Marketplace de Módulos & Integraciones
           </h1>
           <p className="text-slate-400 text-xs mt-1 max-w-2xl">
-            Active o instale funciones avanzadas directamente en el ecosistema Club Digital Pro sin modificar el núcleo de la plataforma.
+            Active o instale funciones avanzadas directamente en el ecosistema del Club Atlético Jorge Newbery sin modificar el núcleo de la plataforma.
           </p>
         </div>
       </div>

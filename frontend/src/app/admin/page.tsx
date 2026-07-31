@@ -28,7 +28,7 @@ export default function SuperAdminExecutiveDashboard() {
             Dashboard Ejecutivo SaaS
           </h1>
           <p className="text-slate-400 text-xs mt-1">
-            Supervisión global de la plataforma Club Digital Pro, ingresos recurrentes (MRR) y salud del ecosistema.
+            Supervisión de la plataforma del Club Atlético Jorge Newbery y métricas institucionales.
           </p>
         </div>
 

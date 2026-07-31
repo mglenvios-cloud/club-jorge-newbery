@@ -28,7 +28,7 @@ export function HeroSection() {
 
         {/* Subtitle */}
         <p className="mt-6 text-lg sm:text-xl text-slate-400 max-w-3xl mx-auto font-normal leading-relaxed">
-          <strong className="text-slate-200">Club Digital Pro</strong> es la plataforma SaaS cloud independiente diseñada para escalar operaciones, adaptar la marca institucional de cada tenant y garantizar seguridad de nivel empresarial.
+          <strong className="text-slate-200">Club Atlético Jorge Newbery</strong> es la plataforma digital oficial diseñada para gestionar la administración integral del club, carnet digital, reservas de instalaciones, torneos y Newbery TV.
         </p>
 
         {/* CTAs */}

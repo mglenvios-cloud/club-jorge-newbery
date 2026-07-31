@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Funcionalidades',
-  description: 'Todas las funcionalidades de Club Digital Pro: Socios, Finanzas, Deportes, Club TV, Media Center IA, App Mobile y más.',
+  description: 'Todas las funcionalidades del Club Atlético Jorge Newbery: Socios, Finanzas, Deportes, Newbery TV, Media Center IA, App Mobile y más.',
 };
 
 const categories = [

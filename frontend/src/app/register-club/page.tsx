@@ -86,8 +86,8 @@ export default function RegisterClubPage() {
           borderRight: '1px solid rgba(99,102,241,0.15)',
         }}>
           <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10, marginBottom: 48 }}>
-            <span style={{ background: 'linear-gradient(135deg,#6366f1,#8b5cf6)', borderRadius: 10, padding: '6px 10px', fontWeight: 800, color: '#fff', fontSize: 16 }}>⚡</span>
-            <span style={{ color: '#fff', fontWeight: 700, fontSize: 18 }}>Club Digital Pro</span>
+            <span style={{ background: 'linear-gradient(135deg,#0055a5,#003366)', borderRadius: 10, padding: '6px 10px', fontWeight: 800, color: '#fff', fontSize: 16 }}>⚽</span>
+            <span style={{ color: '#fff', fontWeight: 700, fontSize: 18 }}>Club Atlético Jorge Newbery</span>
           </Link>
 
           <h1 style={{ fontSize: 40, fontWeight: 900, color: '#fff', lineHeight: 1.2, marginBottom: 20 }}>

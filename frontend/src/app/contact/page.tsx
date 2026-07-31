@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Contacto',
-  description: 'Contactá con el equipo de Club Digital Pro. Asesoramiento sin compromiso para tu club.',
+  description: 'Contactá con la administración del Club Atlético Jorge Newbery.',
 };
 
 export default function ContactPage() {
@@ -12,7 +12,7 @@ export default function ContactPage() {
         <div style={{ textAlign: 'center', marginBottom: 56 }}>
           <h1 style={{ fontSize: 48, fontWeight: 900, color: '#fff', margin: '0 0 16px' }}>Contactanos</h1>
           <p style={{ color: '#94a3b8', fontSize: 18 }}>
-            Nuestro equipo está disponible para asesorarte sin compromiso.
+            Secretaría y administración del Club Atlético Jorge Newbery.
           </p>
         </div>
 
@@ -21,10 +21,10 @@ export default function ContactPage() {
           <div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
               {[
-                { icon: '📧', title: 'Email', value: 'hola@clubdigitalpro.com' },
-                { icon: '💬', title: 'WhatsApp', value: '+54 9 11 XXXX XXXX' },
-                { icon: '🌐', title: 'Web', value: 'www.clubdigitalpro.com' },
-                { icon: '🕐', title: 'Horario de atención', value: 'Lun-Vie 9:00–18:00 (Argentina)' },
+                { icon: '📧', title: 'Email', value: 'contacto@jorgenewbery.org.ar' },
+                { icon: '💬', title: 'Teléfono', value: '+54 11 4501-0000' },
+                { icon: '🌐', title: 'Web', value: 'jorgenewbery.org.ar' },
+                { icon: '🕐', title: 'Horario de atención', value: 'Lun-Vie 9:00–20:00 (Argentina)' },
               ].map((item) => (
                 <div key={item.title} style={{
                   background: 'rgba(15,23,42,0.9)', borderRadius: 14, padding: '20px 24px',

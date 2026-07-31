@@ -163,7 +163,7 @@ export default function LandingPage() {
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
         color: '#64748b', fontSize: 14,
       }}>
-        <span>© 2026 Club Digital Pro. Todos los derechos reservados.</span>
+        <span>© 2026 Club Atlético Jorge Newbery. Todos los derechos reservados.</span>
         <div style={{ display: 'flex', gap: 24 }}>
           <a href="/pricing" className="nav-link">Precios</a>
           <a href="/contact" className="nav-link">Contacto</a>

@@ -37,8 +37,8 @@ export default function SuperAdminLayout({ children }: { children: React.ReactNo
           }}>
             <span style={{ fontSize: 20 }}>⚡</span>
             <div>
-              <div style={{ color: '#fff', fontWeight: 700, fontSize: 13 }}>Club Digital Pro</div>
-              <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: 11 }}>Super Admin</div>
+              <div style={{ color: '#fff', fontWeight: 700, fontSize: 13 }}>Club Atlético Jorge Newbery</div>
+              <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: 11 }}>Administración Oficial</div>
             </div>
           </div>
         </div>

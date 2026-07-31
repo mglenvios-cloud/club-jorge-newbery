@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Demo en Vivo',
-  description: 'Explorá Club Digital Pro en acción. Dashboard completo con socios, finanzas, Club TV, gestión deportiva y más.',
+  description: 'Explorá la plataforma del Club Atlético Jorge Newbery en acción. Dashboard completo con socios, finanzas, Newbery TV, gestión deportiva y más.',
 };
 
 const demoModules = [
@@ -28,10 +28,10 @@ export default function DemoPage() {
           borderRadius: 100, padding: '6px 20px', marginBottom: 20,
           color: '#6ee7b7', fontSize: 14, fontWeight: 600,
         }}>
-          🟢 Demo en vivo — acceso sin contraseña
+          🟢 Acceso directo a la plataforma
         </div>
         <h1 style={{ fontSize: 48, fontWeight: 900, color: '#fff', margin: '0 0 16px', lineHeight: 1.2 }}>
-          Club Digital Pro en acción
+          Club Atlético Jorge Newbery en acción
         </h1>
         <p style={{ color: '#94a3b8', fontSize: 18, lineHeight: 1.6 }}>
           Explorá todos los módulos del sistema con datos de demostración. No se requiere registro.
