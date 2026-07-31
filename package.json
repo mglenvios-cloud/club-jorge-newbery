@@ -1,0 +1,29 @@
+{
+  "name": "club-digital-pro",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Plataforma SaaS Multi-Tenant para Gestión de Clubes Deportivos y Sociales",
+  "scripts": {
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "npm --prefix backend run dev",
+    "build:shared": "npm --prefix shared run build",
+    "build:backend": "npm --prefix backend run build",
+    "build:frontend": "npm --prefix frontend run build",
+    "build": "npm run build:shared && npm run build:backend && npm run build:frontend",
+    "typecheck": "npm --prefix shared run typecheck && npm --prefix backend run typecheck && npm --prefix frontend run typecheck && npm --prefix mobile run typecheck"
+  },
+  "workspaces": [
+    "shared",
+    "backend",
+    "frontend",
+    "mobile"
+  ],
+  "keywords": [
+    "saas",
+    "sports-club",
+    "multi-tenant",
+    "management"
+  ],
+  "author": "Club Digital Pro Team",
+  "license": "UNLICENSED"
+}

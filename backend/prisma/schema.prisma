@@ -1,0 +1,831 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+model Tenant {
+  id                 String               @id @default(uuid())
+  name               String
+  shortName          String?
+  slug               String               @unique
+  domain             String?              @unique
+  subdomain          String?              @unique
+  country            String?
+  province           String?
+  city               String?
+  address            String?
+  email              String?
+  whatsapp           String?
+  website            String?
+  status             String         @default("ACTIVE")
+  plan               String     @default("PROFESSIONAL")
+  
+  // Assets & Identity
+  shieldUrl          String?
+  logoUrl            String?
+  bannerPrincipalUrl String?
+  bannerLoginUrl     String?
+  bannerDashboardUrl String?
+  faviconUrl         String?
+
+  // Dynamic Branding Colors
+  primaryColor       String               @default("#2563eb")
+  secondaryColor     String               @default("#0f172a")
+  accentColor        String               @default("#38bdf8")
+  backgroundColor    String               @default("#0b0f17")
+  textColor          String               @default("#f8fafc")
+
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+
+  users              User[]
+  auditLogs          AuditLog[]
+  modules            TenantModule[]
+  licenses           LicenseKey[]
+  invoices           Invoice[]
+  members            Member[]
+  feeSubscriptions   FeeSubscription[]
+  treasuryMovements  TreasuryMovement[]
+  dailyCashRegisters DailyCashRegister[]
+  disciplines        Discipline[]
+  sportCategories    SportCategory[]
+  athletes           AthleteProfile[]
+  trainings          SportsTraining[]
+  matches            SportsMatch[]
+  tvStreams          TvStream[]
+  mediaItems         MediaItem[]
+  sponsorAds         SponsorAd[]
+  mediaContents      MediaContent[]
+  aiContentJobs      AIContentJob[]
+  mediaViews         MediaView[]
+  membershipPlans    MembershipPlan[]
+  subscriptions      Subscription[]
+  payments           Payment[]
+  incomes            Income[]
+  expenses           Expense[]
+  cashMovements      CashMovement[]
+  saasSubscriptions  TenantSubscription[]
+  facilities         Facility[]
+  courtBookings      CourtBooking[]
+  tournaments        Tournament[]
+  notifications      Notification[]
+  tenantConfig       TenantConfig?
+
+  @@map("tenants")
+}
+
+model User {
+  id           String     @id @default(uuid())
+  tenantId     String
+  email        String
+  passwordHash String
+  firstName    String
+  lastName     String
+  role         String @default("MEMBER")
+  isActive     Boolean    @default(true)
+  avatarUrl    String?
+
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  tenant       Tenant     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  auditLogs    AuditLog[]
+
+  @@unique([tenantId, email])
+  @@map("users")
+}
+
+model Member {
+  id           String            @id @default(uuid())
+  tenantId     String
+  memberNumber String
+  firstName    String
+  lastName     String
+  dni          String
+  email        String
+  phone        String
+  birthDate    String
+  gender       String?
+  address      String
+  city         String
+  category     String    @default("ACTIVO")
+  status       String      @default("ACTIVE")
+  avatarUrl    String?
+  tutorInfo    String?           
+  qrCodeToken  String            @unique @default(uuid())
+  joinedAt     DateTime          @default(now())
+
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  tenant       Tenant            @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  fees         FeeSubscription[]
+  subscriptions Subscription[]
+  payments     Payment[]
+
+  @@unique([tenantId, memberNumber])
+  @@unique([tenantId, dni])
+  @@map("members")
+}
+
+model MembershipPlan {
+  id          String   @id @default(uuid())
+  tenantId    String
+  name        String
+  description String   
+  price       Float
+  period      String   @default("MONTHLY")
+  active      Boolean  @default(true)
+
+  createdAt   DateTime @default(now())
+
+  tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  subscriptions Subscription[]
+
+  @@index([tenantId, active])
+  @@map("membership_plans")
+}
+
+model Subscription {
+  id              String         @id @default(uuid())
+  tenantId        String
+  memberId        String
+  planId          String
+  status          String         @default("ACTIVE")
+  startDate       DateTime       @default(now())
+  nextPaymentDate DateTime
+
+  tenant          Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  member          Member         @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  plan            MembershipPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  payments        Payment[]
+
+  @@index([tenantId, memberId, status])
+  @@map("subscriptions")
+}
+
+model Payment {
+  id             String        @id @default(uuid())
+  tenantId       String
+  memberId       String
+  subscriptionId String?
+  amount         Float
+  currency       String        @default("ARS")
+  method         String
+  status         String        @default("PAID")
+  externalId     String?
+  paidAt         DateTime?     @default(now())
+
+  createdAt      DateTime      @default(now())
+
+  tenant         Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  member         Member        @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  subscription   Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: SetNull)
+  invoice        Invoice?
+
+  @@index([tenantId, memberId, status, createdAt])
+  @@map("payments")
+}
+
+model Invoice {
+  id            String        @id @default(uuid())
+  tenantId      String
+  paymentId     String?       @unique
+  invoiceNumber String        @unique
+  amount        Float
+  currency      String        @default("ARS")
+  status        String @default("PAID")
+  issuedDate    DateTime      @default(now())
+  dueDate       DateTime
+
+  tenant        Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  payment       Payment?      @relation(fields: [paymentId], references: [id], onDelete: SetNull)
+
+  @@index([tenantId, status])
+  @@map("invoices")
+}
+
+model Income {
+  id          String   @id @default(uuid())
+  tenantId    String
+  category    String
+  description String   
+  amount      Float
+  date        DateTime @default(now())
+
+  tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, category, date])
+  @@map("incomes")
+}
+
+model Expense {
+  id          String   @id @default(uuid())
+  tenantId    String
+  category    String
+  description String   
+  amount      Float
+  date        DateTime @default(now())
+
+  tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, category, date])
+  @@map("expenses")
+}
+
+model CashMovement {
+  id          String       @id @default(uuid())
+  tenantId    String
+  type        String @default("INCOME")
+  amount      Float
+  description String       
+
+  createdAt   DateTime     @default(now())
+
+  tenant      Tenant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, type, createdAt])
+  @@map("cash_movements")
+}
+
+model FeeSubscription {
+  id            String    @id @default(uuid())
+  tenantId      String
+  memberId      String
+  memberName    String
+  memberNumber  String
+  category      String
+  period        String
+  amount        Float
+  dueDate       String
+  paidDate      String?
+  status        String @default("PENDING")
+  paymentMethod String?
+  receiptNumber String?
+
+  createdAt     DateTime  @default(now())
+
+  tenant        Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  member        Member    @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@map("fee_subscriptions")
+}
+
+model TreasuryMovement {
+  id            String       @id @default(uuid())
+  tenantId      String
+  type          String
+  category      String
+  concept       String
+  amount        Float
+  paymentMethod String
+  createdBy     String
+  createdAt     DateTime     @default(now())
+
+  tenant        Tenant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@map("treasury_movements")
+}
+
+model DailyCashRegister {
+  id             String   @id @default(uuid())
+  tenantId       String
+  date           String
+  openingBalance Float
+  totalIncome    Float
+  totalExpense   Float
+  closingBalance Float
+  status         String   @default("OPEN")
+
+  tenant         Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, date])
+  @@map("daily_cash_registers")
+}
+
+model Discipline {
+  id          String          @id @default(uuid())
+  tenantId    String
+  name        String
+  code        String
+  icon        String          @default("Trophy")
+
+  tenant      Tenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  categories  SportCategory[]
+  athletes    AthleteProfile[]
+
+  @@unique([tenantId, code])
+  @@map("disciplines")
+}
+
+model SportCategory {
+  id           String          @id @default(uuid())
+  tenantId     String
+  disciplineId String
+  name         String
+  minAge       Int?
+  maxAge       Int?
+
+  tenant       Tenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  discipline   Discipline      @relation(fields: [disciplineId], references: [id], onDelete: Cascade)
+  athletes     AthleteProfile[]
+
+  @@map("sport_categories")
+}
+
+model AthleteProfile {
+  id                     String        @id @default(uuid())
+  tenantId               String
+  disciplineId           String
+  categoryId             String
+  firstName              String
+  lastName               String
+  dni                    String
+  staffRole              String     @default("JUGADOR")
+  avatarUrl              String?
+  heightCm               Int?
+  weightKg               Int?
+  preferredFoot          String?
+  position               String?
+  jerseyNumber           Int?
+  medicalValid           Boolean       @default(true)
+  medicalExpires         String
+  emergencyContactName   String
+  emergencyContactPhone  String
+  observations           String?       
+
+  goals                  Int           @default(0)
+  assists                Int           @default(0)
+  yellowCards            Int           @default(0)
+  redCards               Int           @default(0)
+  minutesPlayed          Int           @default(0)
+  matchesPlayed          Int           @default(0)
+
+  createdAt              DateTime      @default(now())
+
+  tenant                 Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  discipline             Discipline    @relation(fields: [disciplineId], references: [id], onDelete: Cascade)
+  category               SportCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, dni])
+  @@map("athlete_profiles")
+}
+
+model SportsTraining {
+  id              String   @id @default(uuid())
+  tenantId        String
+  disciplineId    String
+  categoryId      String
+  title           String
+  location        String
+  date            String
+  startTime       String
+  endTime         String
+  attendanceCount Int      @default(0)
+  totalAthletes   Int      @default(0)
+
+  tenant          Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@map("sports_trainings")
+}
+
+model SportsMatch {
+  id           String   @id @default(uuid())
+  tenantId     String
+  disciplineId String
+  categoryId   String
+  opponentName String
+  isHome       Boolean  @default(true)
+  location     String
+  date         String
+  time         String
+  scoreHome    Int?
+  scoreAway    Int?
+  status       String   @default("SCHEDULED")
+  refereeName  String?
+  squadCount   Int      @default(0)
+
+  tenant       Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@map("sports_matches")
+}
+
+model TvStream {
+  id           String           @id @default(uuid())
+  tenantId     String
+  title        String
+  description  String           
+  sourceType   String @default("YOUTUBE")
+  streamUrl    String
+  embedUrl     String
+  status       String     @default("SCHEDULED")
+  scheduledAt  String?
+  viewerCount  Int              @default(0)
+  thumbnailUrl String
+  category     String           @default("Institucional")
+
+  createdAt    DateTime         @default(now())
+
+  tenant       Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@map("tv_streams")
+}
+
+model MediaItem {
+  id           String    @id @default(uuid())
+  tenantId     String
+  title        String
+  description  String?   
+  fileType     String @default("VIDEO")
+  fileUrl      String
+  thumbnailUrl String?
+  category     String    @default("General")
+  tagsJson     String?   
+  views        Int       @default(0)
+
+  createdAt    DateTime  @default(now())
+
+  tenant       Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@map("media_items")
+}
+
+model SponsorAd {
+  id          String     @id @default(uuid())
+  tenantId    String
+  sponsorName String
+  logoUrl     String
+  position    String @default("BANNER")
+  targetUrl   String?
+  impressions Int        @default(0)
+  clicks      Int        @default(0)
+  isActive    Boolean    @default(true)
+
+  tenant      Tenant     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@map("sponsor_ads")
+}
+
+model MediaContent {
+  id           String           @id @default(uuid())
+  tenantId     String
+  title        String
+  description  String           
+  type         String @default("ARTICLE")
+  category     String           @default("General")
+  discipline   String?
+  season       String?
+  competition  String?
+  matchId      String?
+  url          String
+  thumbnail    String?
+  tagsJson     String?          
+  aiGenerated  Boolean          @default(false)
+  sponsorId    String?
+  isHistorical Boolean          @default(false)
+
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  tenant       Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  views        MediaView[]
+
+  @@index([tenantId, type, category, createdAt])
+  @@map("media_contents")
+}
+
+model AIContentJob {
+  id        String      @id @default(uuid())
+  tenantId  String
+  prompt    String      
+  result    String      
+  status    String @default("PENDING")
+
+  createdAt DateTime    @default(now())
+
+  tenant    Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@map("ai_content_jobs")
+}
+
+model MediaView {
+  id             String       @id @default(uuid())
+  tenantId       String
+  mediaContentId String
+  sponsorId      String?
+  viewedAt       DateTime     @default(now())
+
+  tenant         Tenant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  mediaContent   MediaContent @relation(fields: [mediaContentId], references: [id], onDelete: Cascade)
+
+  @@map("media_views")
+}
+
+model Module {
+  id               String         @id @default(uuid())
+  code             String         @unique
+  name             String
+  description      String
+  category         String
+  version          String         @default("1.0.0")
+  author           String         @default("Club Digital Pro Core")
+  icon             String         @default("Blocks")
+  imagesJson       String?        
+  changelogJson    String?        
+  dependenciesJson String?        
+  permissionsJson  String?        
+  license          String         @default("Commercial SaaS")
+  compatibility    String         @default(">= 1.0.0")
+  monthlyPrice     Float          @default(0.0)
+  isGlobalActive   Boolean        @default(true)
+
+  tenantModules    TenantModule[]
+
+  @@map("modules")
+}
+
+model TenantModule {
+  id          String   @id @default(uuid())
+  tenantId    String
+  moduleCode  String
+  isInstalled Boolean  @default(true)
+  isEnabled   Boolean  @default(true)
+  version     String   @default("1.0.0")
+  installedAt DateTime @default(now())
+
+  tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  module      Module   @relation(fields: [moduleCode], references: [code], onDelete: Cascade)
+
+  @@unique([tenantId, moduleCode])
+  @@map("tenant_modules")
+}
+
+model LicenseKey {
+  id        String        @id @default(uuid())
+  tenantId  String
+  key       String        @unique
+  plan      String
+  status    String @default("ACTIVE")
+  issuedAt  DateTime      @default(now())
+  expiresAt DateTime
+
+  tenant    Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@map("license_keys")
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  tenantId  String?
+  userId    String?
+  action    String
+  details   String?  
+  severity  String   @default("INFO")
+  ipAddress String?
+  createdAt DateTime @default(now())
+
+  tenant    Tenant?  @relation(fields: [tenantId], references: [id], onDelete: SetNull)
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("audit_logs")
+}
+
+model SaaSPlan {
+  id              String        @id @default(uuid())
+  name            String        @unique
+  description     String        
+  price           Float
+  billingPeriod   String @default("MONTHLY")
+  modulesJson     String        
+  maxMembers      Int           @default(500)
+  maxStorage      Int           @default(10)
+  supportLevel    String        @default("EMAIL")
+  active          Boolean       @default(true)
+  highlighted     Boolean       @default(false)
+  sortOrder       Int           @default(0)
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  subscriptions   TenantSubscription[]
+
+  @@map("saas_plans")
+}
+
+model TenantSubscription {
+  id                  String                 @id @default(uuid())
+  tenantId            String
+  planId              String
+  status              String @default("TRIAL")
+  startDate           DateTime               @default(now())
+  nextBillingDate     DateTime
+  trialEndsAt         DateTime?
+  cancelledAt         DateTime?
+  paymentProvider     String                 @default("MERCADOPAGO")
+  externalSubId       String?
+  amount              Float                  @default(0)
+  currency            String                 @default("ARS")
+
+  createdAt           DateTime               @default(now())
+  updatedAt           DateTime               @updatedAt
+
+  tenant              Tenant                 @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  plan                SaaSPlan               @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, status])
+  @@map("tenant_subscriptions")
+}
+
+model TenantConfig {
+  id                 String    @id @default(uuid())
+  tenantId           String    @unique
+  timezone           String    @default("America/Argentina/Buenos_Aires")
+  currency           String    @default("ARS")
+  language           String    @default("es")
+  allowMobileApp     Boolean   @default(true)
+  allowPublicPortal  Boolean   @default(true)
+  maxAdmins          Int       @default(5)
+  maxStaff           Int       @default(20)
+  customDomain       String?
+  metaTitle          String?
+  metaDescription    String?   
+  socialFacebook     String?
+  socialInstagram    String?
+  socialTwitter      String?
+  socialYoutube      String?
+
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  tenant             Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@map("tenant_configs")
+}
+
+model Lead {
+  id              String      @id @default(uuid())
+  clubName        String
+  contactName     String
+  email           String
+  phone           String?
+  country         String      @default("Argentina")
+  city            String?
+  selectedPlan    String      @default("PROFESSIONAL")
+  status          String  @default("NEW")
+  notes           String?     
+  convertedTenantId String?
+  source          String      @default("LANDING")
+  utmSource       String?
+  utmMedium       String?
+  utmCampaign     String?
+
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@index([status, createdAt])
+  @@index([email])
+  @@map("leads")
+}
+
+model Facility {
+  id                  String         @id @default(uuid())
+  tenantId            String
+  name                String
+  sport               String
+  surface             String?
+  pricePerHour        Float          @default(0)
+  isLightingAvailable Boolean        @default(false)
+  lightingPriceExtra  Float          @default(0)
+  status              String         @default("ACTIVE")
+  openingHours        String         @default("08:00 - 23:00")
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+
+  tenant              Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  bookings            CourtBooking[]
+
+  @@map("facilities")
+}
+
+model CourtBooking {
+  id            String   @id @default(uuid())
+  tenantId      String
+  facilityId    String
+  memberId      String
+  memberName    String
+  memberDni     String
+  date          String
+  startTime     String
+  endTime       String
+  totalPrice    Float
+  paymentStatus String   @default("PENDING")
+  status        String   @default("CONFIRMED")
+  createdAt     DateTime @default(now())
+
+  tenant        Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  facility      Facility @relation(fields: [facilityId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, facilityId, date])
+  @@map("court_bookings")
+}
+
+model Tournament {
+  id        String               @id @default(uuid())
+  tenantId  String
+  name      String
+  sport     String
+  season    String
+  category  String
+  status    String               @default("ACTIVE")
+  startDate String
+  endDate   String?
+  createdAt DateTime             @default(now())
+
+  tenant    Tenant               @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  standings TournamentStanding[]
+
+  @@map("tournaments")
+}
+
+model TournamentStanding {
+  id           String     @id @default(uuid())
+  tournamentId String
+  tenantId     String
+  teamName     String
+  played       Int        @default(0)
+  won          Int        @default(0)
+  drawn        Int        @default(0)
+  lost         Int        @default(0)
+  goalsFor     Int        @default(0)
+  goalsAgainst Int        @default(0)
+  goalDiff     Int        @default(0)
+  points       Int        @default(0)
+  position     Int        @default(1)
+
+  tournament   Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+
+  @@index([tournamentId, points])
+  @@map("tournament_standings")
+}
+
+model Notification {
+  id         String   @id @default(uuid())
+  tenantId   String
+  targetType String   @default("ALL")
+  targetId   String?
+  title      String
+  message    String
+  type       String   @default("INFO")
+  isRead     Boolean  @default(false)
+  linkUrl    String?
+  createdAt  DateTime @default(now())
+
+  tenant     Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, isRead])
+  @@map("notifications")
+}
+
+
