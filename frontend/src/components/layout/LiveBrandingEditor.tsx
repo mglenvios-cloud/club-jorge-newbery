@@ -181,6 +181,74 @@ export function LiveBrandingEditor() {
                 </div>
               </div>
 
+              {/* 2.5 PALETA DE FONDOS DE LA PLATAFORMA & VISOR 3D */}
+              <div className="space-y-3 p-4 rounded-2xl bg-emerald-950/30 border border-emerald-500/30">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
+                    <Palette className="w-4 h-4" />
+                    <span>🎨 Fondo de Páginas & Escena 3D</span>
+                  </h3>
+                  <span className="font-mono text-xs text-emerald-400 font-bold">{secondaryColor}</span>
+                </div>
+
+                <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                  {[
+                    { name: 'Noche', hex: '#040406' },
+                    { name: 'Azul Noche', hex: '#070a12' },
+                    { name: 'Verde Noche', hex: '#05120a' },
+                    { name: 'Granate', hex: '#140505' },
+                    { name: 'Carbón', hex: '#111111' },
+                    { name: 'Negro OLED', hex: '#000000' },
+                  ].map((bgPreset) => (
+                    <button
+                      key={bgPreset.hex}
+                      onClick={() => {
+                        setSecondaryColor(bgPreset.hex);
+                        applyChanges(primaryColor, bgPreset.hex, accentColor, name, fontFamily, fontSize);
+                      }}
+                      className={`p-2 rounded-xl border text-center flex flex-col items-center gap-1 transition-all ${
+                        secondaryColor === bgPreset.hex
+                          ? 'border-emerald-500 bg-emerald-500/20 text-white font-bold'
+                          : 'border-slate-800 bg-slate-900/60 text-slate-400 hover:border-slate-700'
+                      }`}
+                    >
+                      <span className="w-3.5 h-3.5 rounded-full border border-slate-700" style={{ backgroundColor: bgPreset.hex }} />
+                      <span className="text-[9px] truncate">{bgPreset.name}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* 2.6 SLIDER TAMAÑO DEL OBJETO 3D (ESCALA PELOTA / ESCUDO) */}
+              <div className="space-y-2 p-4 rounded-2xl bg-emerald-950/30 border border-emerald-500/30">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
+                    📏 Tamaño del Objeto 3D (Escala Pelota/Escudo)
+                  </span>
+                  <span className="text-xs font-mono font-bold text-emerald-400 bg-black/60 px-2 py-0.5 rounded border border-emerald-500/40">
+                    100%
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  min="0.5"
+                  max="2.5"
+                  step="0.05"
+                  defaultValue="1.0"
+                  onChange={(e) => {
+                    const val = parseFloat(e.target.value);
+                    const root = document.documentElement;
+                    root.style.setProperty('--live-object-scale', `${val}`);
+                  }}
+                  className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                />
+                <div className="flex justify-between text-[9px] text-slate-400 font-mono font-bold">
+                  <span>50% (Pequeño)</span>
+                  <span>100% (Estándar)</span>
+                  <span>250% (Gigante)</span>
+                </div>
+              </div>
+
               {/* 3. Typography & Font Size */}
               <div className="space-y-4 p-4 rounded-2xl bg-slate-900/40 border border-slate-800">
                 <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
