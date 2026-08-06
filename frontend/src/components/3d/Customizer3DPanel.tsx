@@ -64,6 +64,10 @@ interface Customizer3DPanelProps {
   onSecondaryColorChange: (color: string) => void;
   accentColor: string;
   onAccentColorChange: (color: string) => void;
+  backgroundColor?: string;
+  onBackgroundColorChange?: (color: string) => void;
+  objectScale?: number;
+  onObjectScaleChange?: (scale: number) => void;
 }
 
 export const shieldShapesList: { id: ShieldShape3DType; name: string; icon: React.ElementType }[] = [
@@ -102,6 +106,10 @@ export default function Customizer3DPanel({
   onSecondaryColorChange,
   accentColor,
   onAccentColorChange,
+  backgroundColor = '#040406',
+  onBackgroundColorChange,
+  objectScale = 1.0,
+  onObjectScaleChange,
 }: Customizer3DPanelProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -279,6 +287,37 @@ export default function Customizer3DPanel({
               <span>Grande (64px)</span>
             </div>
           </div>
+
+          {/* Slider Tamaño Manual del Objeto 3D (Pelota / Escudo) */}
+          <div className="space-y-1.5 p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-[11px] font-bold text-slate-300 flex items-center gap-1.5">
+                <Circle className="w-3.5 h-3.5 text-emerald-400" />
+                Tamaño del Objeto 3D (Escala Pelota/Escudo)
+              </span>
+              <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/30">
+                {Math.round(objectScale * 100)}%
+              </span>
+            </div>
+            <input
+              type="range"
+              min="0.5"
+              max="2.5"
+              step="0.05"
+              value={objectScale}
+              onChange={(e) => {
+                const val = parseFloat(e.target.value);
+                if (onObjectScaleChange) onObjectScaleChange(val);
+                if (onUpdateTeamConfig) onUpdateTeamConfig(activeTeamId, { objectScale: val });
+              }}
+              className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+            />
+            <div className="flex justify-between text-[9px] text-slate-500 font-mono">
+              <span>50% (Pequeño)</span>
+              <span>100% (Estándar)</span>
+              <span>250% (Gigante)</span>
+            </div>
+          </div>
         </div>
 
         {/* 4. PALETA DE TRI-COLORES */}
@@ -341,6 +380,63 @@ export default function Customizer3DPanel({
                 />
               </div>
               <span className="text-[10px] font-mono text-slate-300 block uppercase">{accentColor}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* 4.5 PALETA DE FONDOS DE LA PLATAFORMA & VISOR 3D */}
+        <div className="space-y-3 pt-2">
+          <label className="text-xs font-bold text-slate-300 uppercase tracking-wider block flex items-center justify-between">
+            <span className="flex items-center gap-2">
+              <Palette className="w-4 h-4 text-emerald-400" />
+              Fondos de Página & Escena 3D
+            </span>
+            <span className="text-[10px] text-emerald-400 font-mono">Personalizado</span>
+          </label>
+
+          <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+            {[
+              { name: 'Noche', hex: '#040406' },
+              { name: 'Azul Noche', hex: '#070a12' },
+              { name: 'Verde Noche', hex: '#05120a' },
+              { name: 'Granate', hex: '#140505' },
+              { name: 'Carbón', hex: '#111111' },
+              { name: 'Negro OLED', hex: '#000000' },
+            ].map((preset) => {
+              const isSelected = backgroundColor === preset.hex;
+              return (
+                <button
+                  key={preset.hex}
+                  onClick={() => {
+                    if (onBackgroundColorChange) onBackgroundColorChange(preset.hex);
+                    if (onUpdateTeamConfig) onUpdateTeamConfig(activeTeamId, { backgroundColor: preset.hex });
+                  }}
+                  className={`p-2 rounded-xl border text-center flex flex-col items-center gap-1 transition-all ${
+                    isSelected
+                      ? 'border-emerald-500 bg-emerald-500/10 text-white font-bold'
+                      : 'border-slate-800 bg-slate-900/60 text-slate-400 hover:border-slate-700'
+                  }`}
+                >
+                  <span className="w-4 h-4 rounded-full border border-slate-700 shadow-sm" style={{ backgroundColor: preset.hex }} />
+                  <span className="text-[9px] truncate">{preset.name}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between">
+            <span className="text-[10px] text-slate-300 font-bold">Color de Fondo Libre Picker:</span>
+            <div className="flex items-center gap-2">
+              <input
+                type="color"
+                value={backgroundColor}
+                onChange={(e) => {
+                  if (onBackgroundColorChange) onBackgroundColorChange(e.target.value);
+                  if (onUpdateTeamConfig) onUpdateTeamConfig(activeTeamId, { backgroundColor: e.target.value });
+                }}
+                className="w-7 h-7 rounded-lg cursor-pointer bg-transparent border-0"
+              />
+              <span className="text-[10px] font-mono text-emerald-400 block uppercase font-bold">{backgroundColor}</span>
             </div>
           </div>
         </div>

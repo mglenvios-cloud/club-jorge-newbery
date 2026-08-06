@@ -123,6 +123,8 @@ export default function LandingPage() {
       fontSize: preset.fontSize,
       shieldUrl: preset.shieldUrl,
       shieldShape: preset.shieldShape,
+      backgroundColor: preset.backgroundColor || '#040406',
+      objectScale: preset.objectScale || 1.0,
     });
   };
 
@@ -134,7 +136,10 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-red-600 selection:text-white">
+    <div
+      className="min-h-screen text-slate-100 font-sans selection:bg-red-600 selection:text-white transition-colors duration-300"
+      style={{ backgroundColor: activeTeam.backgroundColor || '#040406' }}
+    >
       {/* Cinematic Fullscreen 3D Stadium & Hero Overlay Section */}
       <section className="relative w-full h-screen overflow-hidden">
         <StadiumScene3D
@@ -147,6 +152,8 @@ export default function LandingPage() {
           primaryColor={activeTeam.primaryColor}
           secondaryColor={activeTeam.secondaryColor}
           accentColor={activeTeam.accentColor}
+          backgroundColor={activeTeam.backgroundColor || '#040406'}
+          objectScale={activeTeam.objectScale || 1.0}
           onBallClick={handleEnterClick}
           isTransitioning={isTransitioning}
         />
@@ -192,6 +199,10 @@ export default function LandingPage() {
           onSecondaryColorChange={(secondaryColor) => updateActiveTeam({ secondaryColor })}
           accentColor={activeTeam.accentColor}
           onAccentColorChange={(accentColor) => updateActiveTeam({ accentColor })}
+          backgroundColor={activeTeam.backgroundColor || '#040406'}
+          onBackgroundColorChange={(backgroundColor) => updateActiveTeam({ backgroundColor })}
+          objectScale={activeTeam.objectScale || 1.0}
+          onObjectScaleChange={(objectScale) => updateActiveTeam({ objectScale })}
         />
       </section>
 

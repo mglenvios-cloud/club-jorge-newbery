@@ -34,6 +34,8 @@ interface StadiumScene3DProps {
   primaryColor?: string;
   secondaryColor?: string;
   accentColor?: string;
+  backgroundColor?: string;
+  objectScale?: number;
   onBallClick?: () => void;
   isTransitioning?: boolean;
 }
@@ -48,11 +50,14 @@ export default function StadiumScene3D({
   primaryColor,
   secondaryColor,
   accentColor,
+  backgroundColor = '#040406',
+  objectScale = 1.0,
   onBallClick,
   isTransitioning = false,
 }: StadiumScene3DProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const engineRef = useRef<Engine | null>(null);
+  const sceneRef = useRef<Scene | null>(null);
   const mainMeshRef = useRef<Mesh | null>(null);
   const cameraRef = useRef<ArcRotateCamera | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -90,7 +95,13 @@ export default function StadiumScene3D({
       engineRef.current = engine;
 
       scene = new Scene(engine);
-      scene.clearColor = new Color4(0.04, 0.04, 0.06, 1);
+      sceneRef.current = scene;
+      try {
+        const bgC = Color3.FromHexString(backgroundColor || '#040406');
+        scene.clearColor = new Color4(bgC.r, bgC.g, bgC.b, 1);
+      } catch (e) {
+        scene.clearColor = new Color4(0.04, 0.04, 0.06, 1);
+      }
 
       // 2. Camera Setup
       const camera = new ArcRotateCamera(
@@ -321,6 +332,8 @@ export default function StadiumScene3D({
         mainMesh.position = new Vector3(0, 1.0, 0);
       }
 
+      const s = objectScale || 1.0;
+      mainMesh.scaling = new Vector3(s, s, s);
       mainMeshRef.current = mainMesh;
 
       // 6. MATERIAL & TEXTURE CREATION WITH LIVE USER IMAGE / ESCUDO
@@ -602,8 +615,23 @@ export default function StadiumScene3D({
       ]);
       camera.animations = [zoomAnim];
       camera.getScene().beginAnimation(camera, 0, 45, false);
+  // Real-time object scaling effect
+  useEffect(() => {
+    if (mainMeshRef.current) {
+      const s = objectScale || 1.0;
+      mainMeshRef.current.scaling = new Vector3(s, s, s);
     }
-  }, [isTransitioning]);
+  }, [objectScale]);
+
+  // Real-time background color effect
+  useEffect(() => {
+    if (sceneRef.current) {
+      try {
+        const bgC = Color3.FromHexString(backgroundColor || '#040406');
+        sceneRef.current.clearColor = new Color4(bgC.r, bgC.g, bgC.b, 1);
+      } catch (e) {}
+    }
+  }, [backgroundColor]);
 
   return (
     <div className="relative w-full h-full overflow-hidden bg-slate-950">
