@@ -615,6 +615,9 @@ export default function StadiumScene3D({
       ]);
       camera.animations = [zoomAnim];
       camera.getScene().beginAnimation(camera, 0, 45, false);
+    }
+  }, [isTransitioning]);
+
   // Real-time object scaling effect
   useEffect(() => {
     if (mainMeshRef.current) {
