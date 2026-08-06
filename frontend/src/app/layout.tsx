@@ -10,11 +10,20 @@ export const metadata: Metadata = {
   keywords: ['Club Digital Pro', 'Plataforma de Clubes', 'Socios', 'Carnet Digital', 'Deportes', 'Reservas', 'Club TV'],
 };
 
+import { ThemeProvider } from '@/components/ThemeContext';
+import LiveThemeEditor from '@/components/LiveThemeEditor';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es" className="dark">
       <body className="min-h-screen bg-slate-950 text-slate-100 antialiased selection:bg-blue-600 selection:text-white">
-        <AppProviders>{children}</AppProviders>
+        <ThemeProvider>
+          <AppProviders>{children}</AppProviders>
+          <LiveThemeEditor />
+        </ThemeProvider>
       </body>
     </html>
   );
