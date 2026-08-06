@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Demo en Vivo',
-  description: 'Explorá la plataforma del Club Atlético Jorge Newbery en acción. Dashboard completo con socios, finanzas, Newbery TV, gestión deportiva y más.',
+  description: 'Explorá la plataforma digital en acción. Dashboard completo con socios, finanzas, Club TV, gestión deportiva y más.',
 };
 
 const demoModules = [

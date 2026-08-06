@@ -333,9 +333,33 @@ export default function CompleteClubWizardPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="text-xs font-semibold text-slate-300">URL Escudo Oficial</label>
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-semibold text-slate-300">Escudo Oficial (URL o Subir Archivo)</label>
+                  <label className="text-[10px] text-blue-400 font-bold hover:underline cursor-pointer flex items-center gap-1">
+                    <UploadCloud className="w-3 h-3" />
+                    <span>Subir de PC</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const reader = new FileReader();
+                          reader.onload = (ev) => {
+                            if (ev.target?.result) {
+                              setFormData((prev) => ({ ...prev, shieldUrl: ev.target!.result as string }));
+                            }
+                          };
+                          reader.readAsDataURL(file);
+                        }
+                      }}
+                    />
+                  </label>
+                </div>
                 <input
                   type="text"
+                  placeholder="Pegar URL de tu Escudo / Foto o subir desde PC..."
                   value={formData.shieldUrl}
                   onChange={(e) => setFormData({ ...formData, shieldUrl: e.target.value })}
                   className="w-full px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-white text-xs font-mono"

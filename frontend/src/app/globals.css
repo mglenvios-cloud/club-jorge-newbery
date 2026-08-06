@@ -1,4 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,9 +9,11 @@
 
 :root {
   --font-inter: 'Inter', sans-serif;
-  --brand-primary: #2563eb;
-  --brand-secondary: #0f172a;
-  --brand-accent: #38bdf8;
+  --brand-primary: #dc2626;
+  --brand-primary-rgb: 220, 38, 38;
+  --brand-secondary: #0a0a0a;
+  --brand-secondary-rgb: 10, 10, 10;
+  --brand-accent: #ffffff;
   --brand-background: #0b0f17;
 }
 
@@ -17,6 +22,27 @@ body {
   background-color: var(--brand-background);
   color: #f8fafc;
   overflow-x: hidden;
+  transition: font-size 0.2s ease, font-family 0.2s ease;
+}
+
+.bg-brand-primary {
+  background-color: var(--brand-primary) !important;
+}
+
+.text-brand-primary {
+  color: var(--brand-primary) !important;
+}
+
+.border-brand-primary {
+  border-color: var(--brand-primary) !important;
+}
+
+.bg-brand-secondary {
+  background-color: var(--brand-secondary) !important;
+}
+
+.text-brand-accent {
+  color: var(--brand-accent) !important;
 }
 
 /* Glassmorphism utility */
@@ -34,7 +60,7 @@ body {
 }
 
 .glow-primary {
-  box-shadow: 0 0 35px -5px rgba(37, 99, 235, 0.35);
+  box-shadow: 0 0 35px -5px rgba(var(--brand-primary-rgb), 0.35);
 }
 
 /* Custom Scrollbar */
@@ -55,3 +81,4 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #475569;
 }
+

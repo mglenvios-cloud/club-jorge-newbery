@@ -10,7 +10,7 @@ const memberCategories = [
   {
     id: 'cat-001', name: 'Socio Activo', price: 12000, highlighted: true,
     description: 'Para mayores de 18 años con pleno acceso a las instalaciones y voz en asambleas.',
-    features: ['Carnet Digital con QR dinámico', 'Acceso a sede Devoto e instalaciones', 'Reserva de canchas y gimnasio', 'Descuento en entradas Futsal AFA', 'Acceso a Newbery TV'],
+    features: ['Carnet Digital con QR dinámico', 'Acceso a instalaciones deportivas', 'Reserva de canchas y gimnasio', 'Descuento en entradas de partidos', 'Acceso a Club TV'],
     color: '#0055a5',
   },
   {

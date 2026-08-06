@@ -13,14 +13,14 @@ export function LandingFooter() {
               <Cpu className="w-5 h-5" />
             </div>
             <span className="font-extrabold text-lg text-white">
-              CLUB ATLÉTICO <span className="text-blue-500">JORGE NEWBERY</span>
+              CLUB DIGITAL <span className="text-blue-500">PRO</span>
             </span>
           </div>
           <p className="text-slate-400 text-xs max-w-sm leading-relaxed mb-4">
-            Plataforma digital oficial para la gestión integral del Club Atlético Jorge Newbery.
+            Plataforma digital oficial para la gestión integral de clubes deportivos e instituciones.
           </p>
           <p className="text-[11px] text-slate-500 font-mono">
-            © {new Date().getFullYear()} Club Atlético Jorge Newbery. Todos los derechos reservados.
+            © {new Date().getFullYear()} Club Digital Pro. Todos los derechos reservados.
           </p>
         </div>
 
@@ -29,8 +29,8 @@ export function LandingFooter() {
           <ul className="space-y-2">
             <li><a href="/portal" className="hover:text-white">Portal del Socio</a></li>
             <li><a href="/portal/carnet" className="hover:text-white">Carnet Digital QR</a></li>
-            <li><a href="/dashboard/sports/tournaments" className="hover:text-white">Futsal AFA & Torneos</a></li>
-            <li><a href="/tv" className="hover:text-white">Newbery TV</a></li>
+            <li><a href="/dashboard/sports/tournaments" className="hover:text-white">Torneos & Competencias</a></li>
+            <li><a href="/tv" className="hover:text-white">Club TV</a></li>
           </ul>
         </div>
 

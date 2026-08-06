@@ -33,7 +33,7 @@ export default function MediaCenterGeneralPage() {
             <span>Media Center, Banners & Sponsors</span>
           </h1>
           <p className="text-slate-400 text-xs mt-0.5">
-            Gestión de imágenes institucionales, banners de portada, marcas patrocinadoras y Newbery TV.
+            Gestión de imágenes institucionales, banners de portada, marcas patrocinadoras y Club TV.
           </p>
         </div>
 
@@ -71,7 +71,7 @@ export default function MediaCenterGeneralPage() {
               >
                 <option value="Banner Principal Portada">Banner Principal Portada</option>
                 <option value="Sponsor Camiseta Futsal">Sponsor Camiseta Futsal</option>
-                <option value="Banner Newbery TV">Banner Newbery TV</option>
+                <option value="Banner Club TV">Banner Club TV</option>
                 <option value="Sponsor Canchas & Molinetes">Sponsor Canchas & Molinetes</option>
               </select>
             </div>
@@ -127,7 +127,7 @@ export default function MediaCenterGeneralPage() {
 
         <Link href="/dashboard/tv" className="glass-card p-6 rounded-3xl border border-slate-800 hover:border-red-500/40 transition-all group">
           <Video className="w-6 h-6 text-red-500 mb-3 group-hover:scale-110 transition-transform" />
-          <h3 className="font-extrabold text-white text-base">Newbery TV & En Vivos</h3>
+          <h3 className="font-extrabold text-white text-base">Club TV & En Vivos</h3>
           <p className="text-slate-400 text-xs mt-1">Transmisiones y videoteca.</p>
         </Link>
 
