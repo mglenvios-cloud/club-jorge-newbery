@@ -98,8 +98,8 @@ export default function LandingPage() {
   const [isCustomizerOpen, setIsCustomizerOpen] = useState(true);
   const [activeTeamId, setActiveTeamId] = useState<'team1' | 'team2'>('team1');
 
-  const [team1Config, setTeam1Config] = useState<TeamConfig>(PRESET_CLUBS[0]); // Pinocho
-  const [team2Config, setTeam2Config] = useState<TeamConfig>(PRESET_CLUBS[1]); // Newbery
+  const [team1Config, setTeam1Config] = useState<TeamConfig>(PRESET_CLUBS[1]); // Newbery (Base Principal)
+  const [team2Config, setTeam2Config] = useState<TeamConfig>(PRESET_CLUBS[0]); // Pinocho
 
   const [selectedObject, setSelectedObject] = useState<MainObject3DType>('ball');
 
