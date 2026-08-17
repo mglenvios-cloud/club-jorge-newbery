@@ -147,9 +147,46 @@ router.get('/athletes', authenticateJwt, (req: TenantRequest, res: Response) => 
   return res.json({ success: true, data: filtered });
 });
 
+// POST /api/tenant/sports/athletes - Create athlete
+router.post('/athletes', authenticateJwt, (req: TenantRequest, res: Response) => {
+  const body = req.body;
+  if (!body.firstName || !body.lastName) {
+    return res.status(400).json({ success: false, error: 'Nombre y apellido son obligatorios.' });
+  }
+
+  const newAthlete: AthleteProfile = {
+    id: `ath-${Date.now()}`,
+    tenantId: req.tenantId || 'tenant-default-001',
+    disciplineId: body.disciplineId || 'disc-1',
+    disciplineName: body.disciplineName || 'Futsal AFA',
+    categoryId: body.categoryId || 'cat-1',
+    categoryName: body.categoryName || 'Primera',
+    firstName: body.firstName,
+    lastName: body.lastName,
+    dni: body.dni || 'S/D',
+    staffRole: body.staffRole || 'JUGADOR',
+    avatarUrl: body.avatarUrl || 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop',
+    heightCm: body.heightCm ? Number(body.heightCm) : 175,
+    weightKg: body.weightKg ? Number(body.weightKg) : 70,
+    preferredFoot: body.preferredFoot || 'DIESTRO',
+    position: body.position || 'Pivot',
+    jerseyNumber: body.jerseyNumber ? Number(body.jerseyNumber) : 10,
+    medicalValid: body.medicalValid !== undefined ? body.medicalValid : true,
+    medicalExpires: body.medicalExpires || '2026-12-31',
+    emergencyContactName: body.emergencyContactName || '',
+    emergencyContactPhone: body.emergencyContactPhone || '',
+    stats: body.stats || { goals: 0, assists: 0, yellowCards: 0, redCards: 0, minutesPlayed: 0, matchesPlayed: 0 },
+    createdAt: new Date(),
+  };
+
+  mockAthletes.unshift(newAthlete);
+  return res.status(201).json({ success: true, data: newAthlete });
+});
+
 // GET /api/tenant/sports/matches - List matches
 router.get('/matches', authenticateJwt, (_req: TenantRequest, res: Response) => {
   return res.json({ success: true, data: mockMatches });
 });
 
 export default router;
+
