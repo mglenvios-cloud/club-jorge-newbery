@@ -182,11 +182,17 @@ export default function AdminGestionDeportivaPage() {
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          setAthletes(parsed);
+          const sanitized = parsed.map((ath: AthleteProfile) => ({
+            ...ath,
+            avatarUrl: (typeof ath.avatarUrl === 'string' && ath.avatarUrl.length > 200000)
+              ? 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&h=200&fit=crop'
+              : ath.avatarUrl,
+          }));
+          setAthletes(sanitized);
         }
       }
     } catch {
-      // fallback
+      try { localStorage.removeItem('cjp_futsal_athletes'); } catch {}
     }
   }, []);
 
@@ -195,14 +201,63 @@ export default function AdminGestionDeportivaPage() {
     if (file) {
       const reader = new FileReader();
       reader.onload = (event) => {
-        if (event.target?.result) {
-          const resultStr = event.target.result as string;
-          setPhotoPreview(resultStr);
+        const rawResult = event.target?.result as string;
+        if (rawResult) {
+          setPhotoPreview(rawResult);
+          // Compress via Canvas to keep base64 under 20KB and avoid QuotaExceededError
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const maxDim = 450;
+            let width = img.width;
+            let height = img.height;
+            if (width > maxDim || height > maxDim) {
+              if (width > height) {
+                height = Math.round((height * maxDim) / width);
+                width = maxDim;
+              } else {
+                width = Math.round((width * maxDim) / height);
+                height = maxDim;
+              }
+            }
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            if (ctx) {
+              ctx.drawImage(img, 0, 0, width, height);
+              const compressed = canvas.toDataURL(file.type === 'image/png' ? 'image/png' : 'image/jpeg', 0.75);
+              setPhotoPreview(compressed);
+            }
+          };
+          img.src = rawResult;
           setNotification({ type: 'success', text: '¡Foto cargada exitosamente desde PC! Haz clic en "Guardar Jugador" para finalizar.' });
           setTimeout(() => setNotification(null), 3000);
         }
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const safeSaveAthletes = (updatedList: AthleteProfile[]) => {
+    let current = updatedList.map((ath) => ({
+      ...ath,
+      avatarUrl: (typeof ath.avatarUrl === 'string' && ath.avatarUrl.length > 200000)
+        ? 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&h=200&fit=crop'
+        : ath.avatarUrl,
+    }));
+    let attempts = 0;
+    while (attempts < 5) {
+      try {
+        localStorage.setItem('cjp_futsal_athletes', JSON.stringify(current));
+        return;
+      } catch {
+        attempts++;
+        if (current.length > 1) {
+          current.pop();
+        } else {
+          break;
+        }
+      }
     }
   };
 
@@ -241,27 +296,23 @@ export default function AdminGestionDeportivaPage() {
       createdAt: new Date(),
     };
 
-    // Try API POST request with Auth Token, fallback gracefully if 403 or offline
+    // 1. Instant local update
+    const updated = [createdAthlete, ...athletes];
+    setAthletes(updated);
+    safeSaveAthletes(updated);
+
+    // 2. Non-blocking background API sync
     try {
-      await fetch('/api/tenant/sports/athletes', {
+      fetch('/api/tenant/sports/athletes', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token || 'demo-token-jwt'}`,
         },
         body: JSON.stringify(createdAthlete),
-      });
+      }).catch(() => {});
     } catch {
       // Offline fallback
-    }
-
-    // Save locally
-    const updated = [createdAthlete, ...athletes];
-    setAthletes(updated);
-    try {
-      localStorage.setItem('cjp_futsal_athletes', JSON.stringify(updated));
-    } catch {
-      // quota exceeded fallback
     }
 
     setIsSaving(false);

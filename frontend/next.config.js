@@ -21,13 +21,16 @@ const nextConfig = {
     ];
   },
   async rewrites() {
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
-    return [
-      {
-        source: '/api/:path*',
-        destination: `${backendUrl.replace(/\/$/, '')}/:path*`,
-      },
-    ];
+    const backendUrl = process.env.NEXT_PUBLIC_API_URL;
+    if (backendUrl && !backendUrl.includes('localhost')) {
+      return [
+        {
+          source: '/api/:path*',
+          destination: `${backendUrl.replace(/\/$/, '')}/:path*`,
+        },
+      ];
+    }
+    return [];
   },
 };
 
