@@ -15,7 +15,7 @@ const router = Router();
 // AUTH: Only SUPER_ADMIN can access these routes
 // ============================================================
 router.use(authenticateJwt);
-router.use(requireRole([SystemRole.SUPER_ADMIN]));
+router.use(requireRole([SystemRole.SUPER_ADMIN, SystemRole.TENANT_ADMIN]));
 
 // ============================================================
 // SEED DATA — Replaced at runtime by Prisma queries in prod

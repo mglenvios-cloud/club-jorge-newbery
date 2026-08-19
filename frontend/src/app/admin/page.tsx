@@ -11,10 +11,144 @@ import {
   TrendingUp,
   ArrowUpRight,
   Plus,
+  Trophy,
+  Shield,
+  CreditCard,
+  Calendar,
 } from 'lucide-react';
 import Link from 'next/link';
+import { useAuth } from '@/components/providers/AuthProvider';
+import { SystemRole } from '@club-digital-pro/shared';
 
-export default function SuperAdminExecutiveDashboard() {
+export default function AdminPage() {
+  const { user } = useAuth();
+  const isSuperAdmin = user?.role === SystemRole.SUPER_ADMIN;
+
+  if (!isSuperAdmin) {
+    // Dashboard adaptado para TENANT_ADMIN / Administrador del Club
+    return (
+      <div className="space-y-8">
+        {/* Header Banner */}
+        <div className="glass-panel p-8 rounded-3xl border border-blue-500/20 bg-gradient-to-r from-blue-950/40 via-slate-900 to-slate-950 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-semibold mb-3 border border-blue-500/20">
+              <Trophy className="w-3.5 h-3.5" />
+              <span>Administración Institucional · Club Atlético Jorge Newbery</span>
+            </div>
+            <h1 className="text-3xl font-extrabold text-white tracking-tight">
+              Panel de Control del Club
+            </h1>
+            <p className="text-slate-400 text-xs mt-1">
+              Gestión integral de planteles, socios, disciplinas deportivas y cobros de cuotas.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <Link
+              href="/admin/gestion-deportiva"
+              className="px-5 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-500 hover:to-sky-400 text-white font-bold text-xs shadow-lg shadow-blue-600/30 flex items-center justify-center gap-2 shrink-0"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Nuevo Jugador</span>
+            </Link>
+          </div>
+        </div>
+
+        {/* KPI Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="glass-card p-6 rounded-2xl border border-slate-800 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-slate-400">Total Deportistas en Planteles</span>
+              <div className="p-2 rounded-xl bg-blue-500/10 text-blue-400">
+                <Trophy className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-3xl font-black text-white">85</div>
+            <div className="flex items-center gap-2 text-[11px]">
+              <span className="text-emerald-400 font-bold">Futsal AFA & Disciplinas</span>
+            </div>
+          </div>
+
+          <div className="glass-card p-6 rounded-2xl border border-slate-800 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-slate-400">Padrón de Socios Activos</span>
+              <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400">
+                <Users className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-3xl font-black text-white">3,200</div>
+            <div className="flex items-center gap-2 text-[11px]">
+              <span className="text-emerald-400 font-bold">94% Cuota al Día</span>
+            </div>
+          </div>
+
+          <div className="glass-card p-6 rounded-2xl border border-slate-800 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-slate-400">Aptos Médicos Vigentes</span>
+              <div className="p-2 rounded-xl bg-sky-500/10 text-sky-400">
+                <ShieldCheck className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-3xl font-black text-white">98%</div>
+            <div className="flex items-center gap-2 text-[11px]">
+              <span className="text-sky-400 font-bold">Habilitación AFA</span>
+            </div>
+          </div>
+
+          <div className="glass-card p-6 rounded-2xl border border-slate-800 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-slate-400">Turnos de Canchas Hoy</span>
+              <div className="p-2 rounded-xl bg-purple-500/10 text-purple-400">
+                <Calendar className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-3xl font-black text-white">18</div>
+            <div className="flex items-center gap-2 text-[11px]">
+              <span className="text-purple-400 font-bold">Sede Central</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Quick Modules */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Link
+            href="/admin/gestion-deportiva"
+            className="glass-card p-6 rounded-2xl border border-slate-800 hover:border-blue-500/50 transition-all space-y-3 block group"
+          >
+            <div className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <Trophy className="w-5 h-5" />
+            </div>
+            <h3 className="font-bold text-white text-base">Gestión Deportiva & Planteles</h3>
+            <p className="text-slate-400 text-xs">Administración de equipos, fichas médicas y dorsales de Futsal AFA.</p>
+          </Link>
+
+          <Link
+            href="/dashboard/members"
+            className="glass-card p-6 rounded-2xl border border-slate-800 hover:border-blue-500/50 transition-all space-y-3 block group"
+          >
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <Users className="w-5 h-5" />
+            </div>
+            <h3 className="font-bold text-white text-base">Padrón & Carnet Digital</h3>
+            <p className="text-slate-400 text-xs">Registro de socios, emisión de carnet QR y control de morosidad.</p>
+          </Link>
+
+          <Link
+            href="/dashboard/finance"
+            className="glass-card p-6 rounded-2xl border border-slate-800 hover:border-blue-500/50 transition-all space-y-3 block group"
+          >
+            <div className="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <CreditCard className="w-5 h-5" />
+            </div>
+            <h3 className="font-bold text-white text-base">Tesorería & Cobranzas</h3>
+            <p className="text-slate-400 text-xs">Recaudación de cuotas sociales y facturación electrónica.</p>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // Dashboard de SUPER_ADMIN
   return (
     <div className="space-y-8">
       {/* Header Banner */}

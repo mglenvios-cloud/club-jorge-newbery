@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Users, UserPlus, ArrowLeft, Save, CheckCircle2, ShieldCheck, Camera } from 'lucide-react';
 import { MemberCategory, MemberStatus, CreateMemberInput } from '@club-digital-pro/shared';
+import UniversalMediaUploader from '@/components/common/UniversalMediaUploader';
 
 export default function CreateMemberPage() {
   const router = useRouter();
@@ -135,7 +136,7 @@ export default function CreateMemberPage() {
         <div className="space-y-4">
           <h3 className="font-bold text-white text-sm border-b border-slate-800 pb-2">Categoría Institucional & Fotografía</h3>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="space-y-4">
             <div className="space-y-1.5">
               <label className="text-xs font-semibold text-slate-300">Categoría del Socio *</label>
               <select
@@ -152,15 +153,11 @@ export default function CreateMemberPage() {
               </select>
             </div>
 
-            <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-slate-300">URL Fotografía para Carnet Digital</label>
-              <input
-                type="text"
-                value={formData.avatarUrl}
-                onChange={(e) => setFormData({ ...formData, avatarUrl: e.target.value })}
-                className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white text-xs font-mono"
-              />
-            </div>
+            <UniversalMediaUploader
+              value={formData.avatarUrl || ''}
+              onChange={(newUrl) => setFormData({ ...formData, avatarUrl: newUrl })}
+              label="Fotografía para Carnet Digital (Subir de PC / Pegar URL / Biblioteca)"
+            />
           </div>
         </div>
 

@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { User, Mail, Phone, MapPin, Save, ShieldCheck, Check } from 'lucide-react';
+import UniversalMediaUploader from '@/components/common/UniversalMediaUploader';
 
 export default function MemberProfilePage() {
   const [email, setEmail] = useState('santiago.alvarez@email.com');
@@ -16,8 +17,37 @@ export default function MemberProfilePage() {
 
   const [saved, setSaved] = useState(false);
 
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('cjp_member_profile');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed.email) setEmail(parsed.email);
+        if (parsed.phone) setPhone(parsed.phone);
+        if (parsed.address) setAddress(parsed.address);
+        if (parsed.avatarUrl) setAvatarUrl(parsed.avatarUrl);
+        if (parsed.emergencyName) setEmergencyName(parsed.emergencyName);
+        if (parsed.emergencyRelationship) setEmergencyRelationship(parsed.emergencyRelationship);
+        if (parsed.emergencyPhone) setEmergencyPhone(parsed.emergencyPhone);
+      }
+    } catch {}
+  }, []);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const profile = {
+      email,
+      phone,
+      address,
+      avatarUrl,
+      emergencyName,
+      emergencyRelationship,
+      emergencyPhone,
+    };
+    try {
+      localStorage.setItem('cjp_member_profile', JSON.stringify(profile));
+    } catch {}
+
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);
   };
@@ -65,12 +95,10 @@ export default function MemberProfilePage() {
             </div>
 
             <div className="space-y-1.5 sm:col-span-2">
-              <label className="text-xs font-semibold text-slate-300">URL Fotografía de Perfil</label>
-              <input
-                type="text"
+              <UniversalMediaUploader
                 value={avatarUrl}
-                onChange={(e) => setAvatarUrl(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white text-xs font-mono"
+                onChange={setAvatarUrl}
+                label="Fotografía de Perfil (Subir de PC / Pegar URL / Biblioteca)"
               />
             </div>
           </div>

@@ -10,16 +10,13 @@ import {
   AlertTriangle,
   HeartPulse,
   Phone,
-  UploadCloud,
-  Link as LinkIcon,
-  Camera,
-  Folder,
   X,
   UserPlus,
   Sparkles,
   Check,
 } from 'lucide-react';
 import { useAuth } from '@/components/providers/AuthProvider';
+import UniversalMediaUploader from '@/components/common/UniversalMediaUploader';
 
 const mockAthletesList: AthleteProfile[] = [
   {
@@ -183,13 +180,8 @@ export default function RostersPage() {
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          const sanitized = parsed.map((ath: AthleteProfile) => ({
-            ...ath,
-            avatarUrl: (typeof ath.avatarUrl === 'string' && ath.avatarUrl.length > 200000)
-              ? 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&h=200&fit=crop'
-              : ath.avatarUrl,
-          }));
-          setAthletes(sanitized);
+          // Conservar la foto real del deportista sin sobreescribirla con Unsplash
+          setAthletes(parsed);
         }
       }
     } catch {
@@ -197,53 +189,8 @@ export default function RostersPage() {
     }
   }, []);
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const rawResult = event.target?.result as string;
-        if (rawResult) {
-          setPhotoPreview(rawResult);
-          // Canvas compression
-          const img = new Image();
-          img.onload = () => {
-            const canvas = document.createElement('canvas');
-            const maxDim = 450;
-            let width = img.width;
-            let height = img.height;
-            if (width > maxDim || height > maxDim) {
-              if (width > height) {
-                height = Math.round((height * maxDim) / width);
-                width = maxDim;
-              } else {
-                width = Math.round((width * maxDim) / height);
-                height = maxDim;
-              }
-            }
-            canvas.width = width;
-            canvas.height = height;
-            const ctx = canvas.getContext('2d');
-            if (ctx) {
-              ctx.drawImage(img, 0, 0, width, height);
-              const compressed = canvas.toDataURL(file.type === 'image/png' ? 'image/png' : 'image/jpeg', 0.75);
-              setPhotoPreview(compressed);
-            }
-          };
-          img.src = rawResult;
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
   const safeSaveAthletes = (updatedList: AthleteProfile[]) => {
-    let current = updatedList.map((ath) => ({
-      ...ath,
-      avatarUrl: (typeof ath.avatarUrl === 'string' && ath.avatarUrl.length > 200000)
-        ? 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&h=200&fit=crop'
-        : ath.avatarUrl,
-    }));
+    let current = [...updatedList];
     let attempts = 0;
     while (attempts < 5) {
       try {
@@ -573,117 +520,11 @@ export default function RostersPage() {
             </div>
 
             <form onSubmit={handleSavePlayer} className="space-y-6">
-              {/* SECTION: GESTOR MULTIMEDIA UNIVERSAL */}
-              <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-slate-200 uppercase tracking-wider">
-                    Subir o Buscar Foto — Gestor Multimedia Universal
-                  </span>
-                </div>
-
-                {/* Tabs */}
-                <div className="flex gap-2 border-b border-slate-800 pb-3">
-                  <button
-                    type="button"
-                    onClick={() => setMediaTab('upload')}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all ${
-                      mediaTab === 'upload'
-                        ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/30'
-                        : 'bg-slate-900 text-slate-400 hover:text-white'
-                    }`}
-                  >
-                    <UploadCloud className="w-3.5 h-3.5" />
-                    <span>Subir de PC</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setMediaTab('url')}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all ${
-                      mediaTab === 'url'
-                        ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/30'
-                        : 'bg-slate-900 text-slate-400 hover:text-white'
-                    }`}
-                  >
-                    <LinkIcon className="w-3.5 h-3.5" />
-                    <span>Pegar URL</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setMediaTab('library')}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all ${
-                      mediaTab === 'library'
-                        ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/30'
-                        : 'bg-slate-900 text-slate-400 hover:text-white'
-                    }`}
-                  >
-                    <Folder className="w-3.5 h-3.5" />
-                    <span>Biblioteca</span>
-                  </button>
-                </div>
-
-                {/* Tab Content 1: Upload from PC */}
-                {mediaTab === 'upload' && (
-                  <div className="space-y-3">
-                    <label className="border-2 border-dashed border-slate-800 hover:border-blue-500/50 rounded-2xl p-6 text-center block cursor-pointer transition-all bg-slate-900/40">
-                      <UploadCloud className="w-8 h-8 text-blue-400 mx-auto mb-2" />
-                      <span className="text-xs font-bold text-white block">Arrastra tu archivo aquí o selecciona desde PC</span>
-                      <span className="text-[11px] text-slate-400 block mt-1">Formatos soportados: JPG, PNG, WEBP</span>
-                      <input type="file" accept="image/*" className="hidden" onChange={handleFileUpload} />
-                    </label>
-                  </div>
-                )}
-
-                {/* Tab Content 2: URL */}
-                {mediaTab === 'url' && (
-                  <div className="space-y-2">
-                    <label className="text-xs font-semibold text-slate-300">URL Directa de Imagen</label>
-                    <input
-                      type="text"
-                      placeholder="https://..."
-                      value={urlInput}
-                      onChange={(e) => {
-                        setUrlInput(e.target.value);
-                        setPhotoPreview(e.target.value);
-                      }}
-                      className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white text-xs font-mono"
-                    />
-                  </div>
-                )}
-
-                {/* Tab Content 3: Library Presets */}
-                {mediaTab === 'library' && (
-                  <div className="grid grid-cols-4 gap-3">
-                    {[
-                      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop',
-                      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop',
-                      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop',
-                      'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200&h=200&fit=crop',
-                    ].map((imgUrl, i) => (
-                      <button
-                        key={i}
-                        type="button"
-                        onClick={() => setPhotoPreview(imgUrl)}
-                        className="rounded-xl overflow-hidden border border-slate-800 hover:border-blue-500"
-                      >
-                        <img src={imgUrl} alt="Preset" className="w-full h-16 object-cover" />
-                      </button>
-                    ))}
-                  </div>
-                )}
-
-                {/* Preview Box */}
-                {photoPreview && (
-                  <div className="flex items-center gap-4 p-3 rounded-xl bg-slate-900 border border-slate-800">
-                    <img src={photoPreview} alt="Preview" className="w-12 h-12 rounded-xl object-cover border border-blue-500/50" />
-                    <div>
-                      <span className="text-xs font-bold text-white block">Vista Previa Cargada</span>
-                      <span className="text-[10px] text-emerald-400 font-semibold">Listo para asignar al deportista</span>
-                    </div>
-                  </div>
-                )}
-              </div>
+              <UniversalMediaUploader
+                value={photoPreview}
+                onChange={setPhotoPreview}
+                label="Subir o Buscar Foto — Gestor Multimedia Universal"
+              />
 
               {/* SECTION: FORM FIELDS */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
